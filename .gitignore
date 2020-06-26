@@ -12,6 +12,7 @@
 pyvenv.cfg
 .venv
 pip-selfcheck.json
+.direnv
 
 # intellij files
 .idea
