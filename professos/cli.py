@@ -1,9 +1,10 @@
 #!/usr/bin/env python3
 import requests
 
-from professos.testplan.op import OpTest
+from testplan.op import OpTest
 
-professos_url = "http://localhost:8888/api/"
+professos_url = "http://localhost:8888/api"
+#professos_url = "https://openid.professos/api"
 
 if __name__ == '__main__':
     print("[*] Professos CLI started")
@@ -12,6 +13,7 @@ if __name__ == '__main__':
 
     try:
         op.create()
+        #op.set_config()
         op.learn()
     except requests.RequestException as e:
         print("Received error from Professos")

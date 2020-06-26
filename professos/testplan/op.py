@@ -1,4 +1,4 @@
-from professos.testplan.base import BaseTest
+from testplan.base import BaseTest
 
 class OpTest(BaseTest):
     def __init__(self, profapi):

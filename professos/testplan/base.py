@@ -11,9 +11,10 @@ class BaseTest(object):
         self.initialized = False
 
     def create(self):
-        response = requests.post(self.profapi + self.target + '/create-test-object')
+        url = self.profapi + '/' + self.target + '/create-test-object'
+        response = requests.post(url)
         if response.status_code != 200:
-            raise requests.RequestException('POST /{}/create-test-object {}'.format(self.target, response.status_code))
+            raise requests.RequestException('POST {} Error {}'.format(url, response.status_code))
         response_json = json.loads(response.text)
         self.testId = response_json["TestId"]
         self.testObj = response_json
@@ -24,19 +25,42 @@ class BaseTest(object):
     def clean(self):
         if len(self.testId) == 0 or not self.initialized:
             return
+        url = self.profapi + '/delete-test-object'
         header = {"Content-type": "application/x-www-form-urlencoded"}
         payload = "test_id=" + self.testId
-        response = requests.post(self.profapi + '/delete-test-object', data=payload, headers=header)
-        if response.status_code != 200:
-            raise requests.RequestException('POST /delete-test-object {}'.format(response.status_code))
+        response = requests.post(url, data=payload, headers=header)
+        if response.status_code != 200 and response.status_code != 204:
+            raise requests.RequestException('POST {} Error {}'.format(url, response.status_code))
         print("Delete test plan ID: {}".format(self.testId))
 
-    def learn(self):
-        header = {"Content-type": "application/json"}
+    def set_config(self):
+        url = self.profapi + '/' + self.target + '/' + self.testId + '/config'
+        header = {"Content-Type": "application/json"}
+        #header = {"Content-type": "application/json"}
+        jsonFile = open("config/op/mitreid-server/professos.json", "r+")
+        jsoncfg=json.load(jsonFile)
+
         payload = self.testObj["TestConfig"]
-        #print(payload)
-        response = requests.post(self.profapi + self.target + '/learn', data=payload, headers=header)
+        payload.update(jsoncfg)
+
+        response = requests.post(url, json=payload, headers=header)
         if response.status_code != 200:
-            raise requests.RequestException('POST /{}/learn {}'.format(self.target, response.status_code))
-        print(response)
+            raise requests.RequestException('POST {} Error {}'.format(url, response.status_code))
+        print("Updated config: {}".format(json.dumps(payload, indent=4)))
+
+
+    def learn(self):
+        url = self.profapi + '/' + self.target + '/' + self.testId + '/learn'
+        header = {"Content-type": "application/json"}
+        jsonFile = open("config/op/mitreid-server/professos.json", "r+")
+        jsoncfg=json.load(jsonFile)
+
+        payload = self.testObj["TestConfig"]
+        payload.update(jsoncfg)
+
+        print("Learn: {}".format(json.dumps(payload, indent=4)))
+
+        response = requests.post(url, json=payload, headers=header)
+        if response.status_code != 200:
+            raise requests.RequestException('POST {} Error {}'.format(url, response.status_code))
         self.initialized = True
