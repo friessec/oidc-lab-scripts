@@ -22,7 +22,7 @@ Returns: "Content-type": "application/json"
 # Delete Testplan
 ```
 Type: POST
-Url:  /create-test-object 
+Url:  /delete-test-object 
 Header: "Content-type": "application/x-www-form-urlencoded"
 Param: test_id=YourTestId (optional)
 ```
@@ -31,7 +31,7 @@ Param: test_id=YourTestId (optional)
 ```
 Type: POST
 Url:  /{rp|op}/{testId}/learn
-Header: "Content-type": "application/application/json"
+Header: "Content-type": "application/json"
 Payload: "TestConfig"
 Returns: "Content-type": "application/json"
 ```
@@ -41,7 +41,7 @@ Returns: "Content-type": "application/json"
 ```
 Type: POST
 Url:  /{rp|op}/{testId}/test/{stepId}
-Header: "Content-type": "application/application/json"
+Header: "Content-type": "application/json"
 Returns: "Content-type": "application/json"
 ```
 
