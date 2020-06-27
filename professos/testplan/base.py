@@ -18,9 +18,8 @@ class BaseTest(object):
         response_json = json.loads(response.text)
         self.testId = response_json["TestId"]
         self.testObj = response_json
-#        for i in response_json:
-#            print(i)
-        print("Create new test plan: TestId={}".format(self.testId))
+
+        print("Create new test plan: TestId = {}".format(self.testId))
 
     def clean(self):
         if len(self.testId) == 0 or not self.initialized:
@@ -62,3 +61,24 @@ class BaseTest(object):
         if response.status_code != 200:
             raise requests.RequestException('POST {} Error {}'.format(url, response.status_code))
         self.initialized = True
+
+    def runAllTests(self):
+        for i, item in enumerate(self.testObj["TestReport"]["TestStepResult"]):
+            self.runTest(i)
+
+    def runTest(self, id):
+
+        testStep = self.testObj["TestReport"]["TestStepResult"][id]
+
+        test = testStep['StepReference']['Name']
+
+        print("Run Test Step: {}".format(test), end='')
+
+        url = self.profapi + '/' + self.target + '/' + self.testId + '/test/' + test
+        header = {"Content-type": "application/json"}
+
+        response = requests.post(url, headers=header)
+        if response.status_code != 200:
+            print()
+            raise requests.RequestException('POST {} Error {}'.format(url, response.status_code))
+        print("- Done".format(response))

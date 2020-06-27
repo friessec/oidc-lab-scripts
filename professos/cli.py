@@ -15,6 +15,8 @@ if __name__ == '__main__':
         op.create()
         #op.set_config()
         op.learn()
+        op.runAllTests()
+        #op.runTest(0)
     except requests.RequestException as e:
         print("Received error from Professos")
         print(str(e))
