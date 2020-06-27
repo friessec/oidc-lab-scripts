@@ -1,5 +1,6 @@
 #!/usr/bin/env python3
 import requests
+import os
 
 from testplan.op import OpTest
 
@@ -10,13 +11,13 @@ if __name__ == '__main__':
     print("[*] Professos CLI started")
 
     op = OpTest(professos_url)
-
     try:
         op.create()
         #op.set_config()
         op.learn()
         op.runAllTests()
         #op.runTest(0)
+        op.export_result()
     except requests.RequestException as e:
         print("Received error from Professos")
         print(str(e))
