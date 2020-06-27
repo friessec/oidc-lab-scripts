@@ -46,6 +46,15 @@ class BaseTest(object):
             raise requests.RequestException('POST {} Error {}'.format(url, response.status_code))
         print("Updated config: {}".format(json.dumps(payload, indent=4)))
 
+    def get_config(self):
+        url = self.profapi + '/' + self.target + '/' + self.testId + '/config'
+        header = {"Content-Type": "application/json"}
+
+        response = requests.get(url, headers=header)
+        if response.status_code != 200:
+            raise requests.RequestException('GET {} Error {}'.format(url, response.status_code))
+        print(response.content)
+
     def learn(self):
         url = self.profapi + '/' + self.target + '/' + self.testId + '/learn'
         header = {"Content-type": "application/json"}
@@ -67,7 +76,7 @@ class BaseTest(object):
             self.runTest(i)
 
     def runTest(self, id):
-
+        print('='*80)
         testStep = self.testObj["TestReport"]["TestStepResult"][id]
 
         test = testStep['StepReference']['Name']
@@ -81,4 +90,10 @@ class BaseTest(object):
         if response.status_code != 200:
             print()
             raise requests.RequestException('POST {} Error {}'.format(url, response.status_code))
-        print("- Done".format(response))
+        result = response.json()
+        result_status = result['Result']
+        print(" - {}".format(result_status))
+        if result_status != 'PASS':
+            print("{}".format(json.dumps(response.json(), indent=4)))
+
+
