@@ -36,7 +36,6 @@ class BaseTest(object):
     def set_config(self):
         url = self.profapi + '/' + self.target + '/' + self.testId + '/config'
         header = {"Content-Type": "application/json"}
-        #header = {"Content-type": "application/json"}
         jsonFile = open("config/op/mitreid-server/professos.json", "r+")
         jsoncfg=json.load(jsonFile)
 
@@ -47,7 +46,6 @@ class BaseTest(object):
         if response.status_code != 200:
             raise requests.RequestException('POST {} Error {}'.format(url, response.status_code))
         print("Updated config: {}".format(json.dumps(payload, indent=4)))
-
 
     def learn(self):
         url = self.profapi + '/' + self.target + '/' + self.testId + '/learn'
