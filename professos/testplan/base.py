@@ -1,5 +1,5 @@
 import requests, json
-
+import time
 
 class BaseTest(object):
 
@@ -93,7 +93,16 @@ class BaseTest(object):
         result = response.json()
         result_status = result['Result']
         print(" - {}".format(result_status))
+#        print("{}".format(json.dumps(result['LogEntry'], indent=4)))
         if result_status != 'PASS':
-            print("{}".format(json.dumps(response.json(), indent=4)))
-
+            for entry in result['LogEntry']:
+                date = time.localtime(entry['Date'])
+                print("{}: {}".format(time.strftime("%H:%M:%S", date), entry['Text']))
+                if entry["CodeBlock"]:
+                    print("{}".format(json.dumps(entry['CodeBlock'], indent=2)))
+                if entry["HttpRequest"]:
+                    print("{}".format(json.dumps(entry['HttpRequest'], indent=2)))
+                if entry["HttpResponse"]:
+                    print("{}".format(json.dumps(entry['HttpResponse'], indent=2)))
+                print('-' * 80)
 
