@@ -63,8 +63,9 @@ class BaseTest(object):
     def learn(self):
         url = self.profapi + '/' + self.target_type + '/' + self.testId + '/learn'
         header = {"Content-type": "application/json"}
-        jsonFile = open("config/op/mitreid-server/professos.json", "r+")
-        jsoncfg=json.load(jsonFile)
+
+        jsonFile = open("config/" + self.target_type + "/" + self.target_name + "/professos.json", "r+")
+        jsoncfg = json.load(jsonFile)
 
         payload = self.testObj["TestConfig"]
         payload.update(jsoncfg)
