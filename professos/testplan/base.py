@@ -53,7 +53,7 @@ class BaseTest(object):
         payload.update(jsoncfg)
 
         response = requests.post(url, json=payload, headers=header)
-        if response.status_code != 200:
+        if response.status_code != 200 and response.status_code != 204:
             raise requests.RequestException('POST {} Error {}'.format(url, response.status_code))
         print("Updated config: {}".format(json.dumps(payload, indent=4)))
 
