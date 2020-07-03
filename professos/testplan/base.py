@@ -124,7 +124,6 @@ class BaseTest(object):
         directory = "results/" + self.target_type + "/" + self.target_name
         if not os.path.exists(directory):
             os.makedirs(directory)
-        print(xml_response)
 
         with open (directory + "/result-" + datetime.now().isoformat(timespec='minutes') + ".xml", "w") as file:
             file.write(xml_response)
