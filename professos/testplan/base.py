@@ -15,9 +15,15 @@ class BaseTest(object):
         self.testObj = None
         self.initialized = False
 
-    def create(self):
+    def create(self, testID=None):
         url = self.profapi + '/' + self.target_type + '/create-test-object'
-        response = requests.post(url)
+        response = ""
+        if testID:
+            header = {"Content-type": "application/x-www-form-urlencoded"}
+            payload = "test_id=" + testID
+            response = requests.post(url, data=payload, headers=header)
+        else:
+            response = requests.post(url)
         if response.status_code != 200:
             raise requests.RequestException('POST {} Error {}'.format(url, response.status_code))
         response_json = json.loads(response.text)
@@ -58,7 +64,7 @@ class BaseTest(object):
         response = requests.get(url, headers=header)
         if response.status_code != 200:
             raise requests.RequestException('GET {} Error {}'.format(url, response.status_code))
-        print(response.content)
+        print("{}".format(json.dumps(response.json(), indent=4)))
 
     def learn(self):
         url = self.profapi + '/' + self.target_type + '/' + self.testId + '/learn'
