@@ -1,5 +1,5 @@
 #!/usr/bin/env python3
-import requests
+
 import os
 import sys
 import argparse
@@ -12,23 +12,6 @@ from testplan.rp import RpTest
 professos_url = "http://localhost:8888/api"
 #professos_url = "https://openid.professos/api"
 
-
-def testhandler(testobj):
-    try:
-        testobj.create()
-        testobj.set_config()
-        #testobj.learn()
-        testobj.get_config()
-        #testobj.runAllTests()
-        testobj.runTest(0)
-        #testobj.export_result()
-    except requests.RequestException as e:
-        print("Received error from Professos")
-        print(str(e))
-    finally:
-        testobj.clean()
-
-
 if __name__ == '__main__':
     print("[*] Professos CLI started")
 
@@ -40,12 +23,14 @@ if __name__ == '__main__':
     parser.add_argument('--rp', action='store_true',
                         default=False,
                         help='rp tests')
+    parser.add_argument('--test', help="A comma separated list of tests which should run", type=lambda x: x.split(','))
     args = parser.parse_args()
+
+    print(args.test)
 
     if args.rp == args.op:   # xor
         print("Choose OP or RP tests")
         sys.exit(-1)
-
 
     if not os.path.exists("config/" + "op/" if args.op else "rp/" + args.config ):
         print("No configuration found for: ", args.config)
@@ -55,6 +40,8 @@ if __name__ == '__main__':
         obj = OpTest(professos_url, args.config)
     else:
         obj = RpTest(professos_url, args.config)
-    testhandler(obj)
 
-
+    if args.test:
+        obj.run(args.test)
+    else:
+        obj.run()

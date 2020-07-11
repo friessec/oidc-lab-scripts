@@ -95,10 +95,16 @@ class BaseTest(object):
     def runAllTests(self):
         skip_tests = None
         if self.staticCfg:
-            skip_tests = self.staticCfg['skipTests'].split(',')
+            skip_tests = [int(x) for x in self.staticCfg['skipTests'].split(",")]
 
         for i, item in enumerate(self.testObj["TestReport"]["TestStepResult"]):
-            if i not in skip_tests:
+            if skip_tests:
+                if i not in skip_tests:
+                    self.runTest(i)
+                else:
+                    print('='*80)
+                    print("Skip Test [{}]: {}".format(i, self.testObj["TestReport"]["TestStepResult"][i]['StepReference']['Name']))
+            else:
                 self.runTest(i)
 
     def runTest(self, id):
@@ -107,7 +113,7 @@ class BaseTest(object):
 
         test = testStep['StepReference']['Name']
 
-        print("Run Test Step: {}".format(test), end='')
+        print("Run Test Step [{}]: {}".format(id, test), end='')
 
         url = self.profapi + '/' + self.target_type + '/' + self.testId + '/test/' + test
         header = {"Content-type": "application/json"}
@@ -147,3 +153,22 @@ class BaseTest(object):
 
         with open (directory + "/result-" + datetime.now().isoformat(timespec='minutes') + ".xml", "w") as file:
             file.write(xml_response)
+
+    def run(self, run_test=None):
+        try:
+            self.create()
+            if self.staticCfg:
+                self.set_config()
+            else:
+                self.learn()
+            if run_test:
+                for i in run_test:
+                    self.runTest(int(i))
+            else:
+                self.runAllTests()
+            #self.export_result()
+        except requests.RequestException as e:
+            print("Received error from Professos")
+            print(str(e))
+        finally:
+            self.clean()
