@@ -154,7 +154,7 @@ class BaseTest(object):
         with open (directory + "/result-" + datetime.now().isoformat(timespec='minutes') + ".xml", "w") as file:
             file.write(xml_response)
 
-    def run(self, run_test=None):
+    def run(self, export_results=False, run_test=None):
         try:
             self.create()
             if self.staticCfg:
@@ -166,7 +166,8 @@ class BaseTest(object):
                     self.runTest(int(i))
             else:
                 self.runAllTests()
-            #self.export_result()
+            if export_results:
+                self.export_result()
         except requests.RequestException as e:
             print("Received error from Professos")
             print(str(e))
