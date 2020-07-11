@@ -2,6 +2,7 @@ import requests
 import json
 import time
 import os
+import base64
 from bs4 import BeautifulSoup
 from datetime import datetime
 
@@ -125,7 +126,12 @@ class BaseTest(object):
         result = response.json()
         result_status = result['Result']
         print(" - {}".format(result_status))
-#        print("{}".format(json.dumps(result['LogEntry'], indent=4)))
+        #print("{}".format(json.dumps(result['LogEntry'], indent=4)))
+        #for entry in result['LogEntry']:
+        #    if entry["Screenshot"]:
+        #        with open("screenshot.png", "wb") as file:
+        #            file.write(base64.b64decode(entry["Screenshot"]["Data"]))
+
         if result_status != 'PASS':
             for entry in result['LogEntry']:
                 date = time.localtime(entry['Date'])
