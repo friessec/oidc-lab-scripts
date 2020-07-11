@@ -16,11 +16,12 @@ professos_url = "http://localhost:8888/api"
 def testhandler(testobj):
     try:
         testobj.create()
-        #testobj.set_config()
-        testobj.learn()
-        testobj.runAllTests()
-        #testobj.runTest(0)
-        testobj.export_result()
+        testobj.set_config()
+        #testobj.learn()
+        testobj.get_config()
+        #testobj.runAllTests()
+        testobj.runTest(0)
+        #testobj.export_result()
     except requests.RequestException as e:
         print("Received error from Professos")
         print(str(e))

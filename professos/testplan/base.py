@@ -13,11 +13,20 @@ class BaseTest(object):
         self.target_name = target_name
         self.testId = ""
         self.testObj = None
+        self.staticCfg = None
         self.initialized = False
 
-    def create(self, testID=None):
+    def create(self):
         url = self.profapi + '/' + self.target_type + '/create-test-object'
         response = ""
+        testID = None
+
+        staticConfig = "config/" + self.target_type + "/" + self.target_name + "/statictest.json"
+        if os.path.exists(staticConfig):
+            staticFile = open("config/" + self.target_type + "/" + self.target_name + "/statictest.json", "r+")
+            self.staticCfg = json.load(staticFile)
+            testID = self.staticCfg['testId']
+
         if testID:
             header = {"Content-type": "application/x-www-form-urlencoded"}
             payload = "test_id=" + testID
@@ -84,8 +93,13 @@ class BaseTest(object):
         self.initialized = True
 
     def runAllTests(self):
+        skip_tests = None
+        if self.staticCfg:
+            skip_tests = self.staticCfg['skipTests'].split(',')
+
         for i, item in enumerate(self.testObj["TestReport"]["TestStepResult"]):
-            self.runTest(i)
+            if i not in skip_tests:
+                self.runTest(i)
 
     def runTest(self, id):
         print('='*80)
