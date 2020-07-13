@@ -35,7 +35,7 @@ if __name__ == '__main__':
         print("Choose OP or RP tests")
         sys.exit(-1)
 
-    if not os.path.exists("config/" + "op/" if args.op else "rp/" + args.config ):
+    if not os.path.exists("config/op/" if args.op else "config/rp/" + args.config ):
         print("No configuration found for: ", args.config)
         sys.exit(-1)
 
