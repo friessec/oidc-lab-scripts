@@ -95,7 +95,7 @@ class BaseTest(object):
 
     def runAllTests(self):
         skip_tests = None
-        if self.staticCfg:
+        if self.staticCfg and self.staticCfg['skipTests'] != "":
             skip_tests = [int(x) for x in self.staticCfg['skipTests'].split(",")]
 
         for i, item in enumerate(self.testObj["TestReport"]["TestStepResult"]):
