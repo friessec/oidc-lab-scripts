@@ -108,7 +108,7 @@ class BaseTest(object):
             else:
                 self.runTest(i)
 
-    def runTest(self, id):
+    def runTest(self, id, screenshot=False):
         print('='*80)
         testStep = self.testObj["TestReport"]["TestStepResult"][id]
 
@@ -126,11 +126,17 @@ class BaseTest(object):
         result = response.json()
         result_status = result['Result']
         print(" - {}".format(result_status))
-        #print("{}".format(json.dumps(result['LogEntry'], indent=4)))
-        #for entry in result['LogEntry']:
-        #    if entry["Screenshot"]:
-        #        with open("screenshot.png", "wb") as file:
-        #            file.write(base64.b64decode(entry["Screenshot"]["Data"]))
+        if screenshot:
+            # print("{}".format(json.dumps(result['LogEntry'], indent=4)))
+            cnt = 0
+            for entry in result['LogEntry']:
+                if entry["Screenshot"]:
+                    cnt += 1
+                    directory = "results/" + self.target_type + "/" + self.target_name
+                    if not os.path.exists(directory):
+                        os.makedirs(directory)
+                    with open("{}/screenshot{}.png".format(directory, cnt), "wb") as file:
+                        file.write(base64.b64decode(entry["Screenshot"]["Data"]))
 
         if result_status != 'PASS':
             for entry in result['LogEntry']:
@@ -160,7 +166,7 @@ class BaseTest(object):
         with open (directory + "/result-" + datetime.now().isoformat(timespec='minutes') + ".xml", "w") as file:
             file.write(xml_response)
 
-    def run(self, export_results=False, run_test=None):
+    def run(self, export_results=False, run_test=None, screenshot=False):
         try:
             self.create()
             if self.staticCfg:
@@ -169,7 +175,7 @@ class BaseTest(object):
                 self.learn()
             if run_test:
                 for i in run_test:
-                    self.runTest(int(i))
+                    self.runTest(int(i), screenshot=screenshot)
             else:
                 self.runAllTests()
             if export_results:
