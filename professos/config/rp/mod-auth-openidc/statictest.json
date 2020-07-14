@@ -1,4 +1,5 @@
 {
   "testId": "modauthopenidc",
-  "skipTests": ""
+  "skipTests": "",
+  "disable_dynamic": false
 }

@@ -173,7 +173,7 @@ class BaseTest(object):
     def run(self, export_results=False, run_test=None, screenshot=False):
         try:
             self.create()
-            if self.staticCfg:
+            if self.staticCfg and self.staticCfg["disable_dynamic"]:
                 self.set_config()
             else:
                 self.learn()
