@@ -1,0 +1,9 @@
+{
+  "UrlClientTarget": "https://py-oidcrp/",
+  "InputFieldName": null,
+  "SeleniumScript": "var iss=document.getElementsByName('iss')[0].value=\"honest-idp.professos\";\ndocument.forms[0].submit();\n",
+  "FinalValidUrl": "https://py-oidcrp/honest-idp.professos",
+  "HonestUserNeedle": "{sub=honest-op-test-subject, iss=https://honest-idp.professos/l1umWaH-zcw}",
+  "EvilUserNeedle": "{sub=evil-op-test-subject, iss=https://attack-idp.professos/l1umWaH-zcw}",
+  "ProfileUrl": "https://py-oidcrp/honest-idp.professos"
+}
