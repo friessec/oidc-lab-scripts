@@ -26,9 +26,6 @@ if __name__ == '__main__':
     parser.add_argument('--export', action='store_true',
                         default=False,
                         help='export result to file')
-    parser.add_argument('--screenshot', action='store_true',
-                        default=False,
-                        help='stores screenshots in result folder')
     parser.add_argument('--test', help="A comma separated list of tests which should run", type=lambda x: x.split(','))
     args = parser.parse_args()
 
@@ -46,6 +43,6 @@ if __name__ == '__main__':
         obj = RpTest(professos_url, args.config)
 
     if args.test:
-        obj.run(run_test=args.test, export_results=args.export, screenshot=args.screenshot)
+        obj.run(run_test=args.test, export_results=args.export)
     else:
         obj.run(export_results=args.export)

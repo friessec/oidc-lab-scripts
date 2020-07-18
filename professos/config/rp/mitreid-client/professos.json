@@ -1,7 +1,7 @@
 {
     "UrlClientTarget": "https://mitreid-client/simple-web-app/login",
     "InputFieldName": null,
-    "SeleniumScript": null,
+    "SeleniumScript": "",
     "FinalValidUrl": "https://mitreid-client/simple-web-app",
     "HonestUserNeedle": "{sub=honest-op-test-subject, iss=https://honest-idp.professos/w8KMlfyok9U}",
     "EvilUserNeedle": "{sub=evil-op-test-subject, iss=https://attack-idp.professos/w8KMlfyok9U}",

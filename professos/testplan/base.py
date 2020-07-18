@@ -5,6 +5,8 @@ import os
 import base64
 from bs4 import BeautifulSoup
 from datetime import datetime
+from pathlib import Path
+
 
 class BaseTest(object):
 
@@ -84,6 +86,7 @@ class BaseTest(object):
         jsoncfg = json.load(jsonFile)
 
         if self.target_type == "rp":
+            #FIXME update only ISS if available
             jsoncfg["HonestUserNeedle"] = "{sub=honest-op-test-subject, iss=https://honest-idp.professos/" + self.testId + "}"
             jsoncfg["EvilUserNeedle"] = "{sub=evil-op-test-subject, iss=https://attack-idp.professos/" + self.testId + "}"
 
@@ -112,7 +115,7 @@ class BaseTest(object):
             else:
                 self.runTest(i)
 
-    def runTest(self, id, screenshot=False):
+    def runTest(self, id):
         print('='*80)
         testStep = self.testObj["TestReport"]["TestStepResult"][id]
 
@@ -130,18 +133,24 @@ class BaseTest(object):
         result = response.json()
         result_status = result['Result']
         print(" - {}".format(result_status))
-        if screenshot:
-            #print("{}".format(json.dumps(result, indent=4)))
-            #print("{}".format(json.dumps(result['LogEntry'], indent=4)))
-            cnt = 0
-            for entry in result['LogEntry']:
-                if entry["Screenshot"]:
-                    cnt += 1
-                    directory = "results/" + self.target_type + "/" + self.target_name
-                    if not os.path.exists(directory):
-                        os.makedirs(directory)
-                    with open("{}/screenshot{}.png".format(directory, cnt), "wb") as file:
-                        file.write(base64.b64decode(entry["Screenshot"]["Data"]))
+        #print("{}".format(json.dumps(result, indent=4)))
+        #print("{}".format(json.dumps(result['LogEntry'], indent=4)))
+        directory = "results/" + self.target_type + "/" + self.target_name + "/test" + str(id)
+        if not os.path.exists(directory):
+            os.makedirs(directory)
+        for path in Path(directory).glob("*"):
+            if path.is_file():
+                path.unlink()
+
+        with open("{}/result.xml".format(directory), "w") as file:
+            file.write(json.dumps(result['LogEntry'], indent=4))
+
+        cnt = 0
+        for entry in result['LogEntry']:
+            if entry["Screenshot"]:
+                cnt += 1
+                with open("{}/screenshot{}.png".format(directory, cnt), "wb") as file:
+                    file.write(base64.b64decode(entry["Screenshot"]["Data"]))
 
         if result_status != 'PASS':
             for entry in result['LogEntry']:
@@ -171,7 +180,7 @@ class BaseTest(object):
         with open (directory + "/result-" + datetime.now().isoformat(timespec='minutes') + ".xml", "w") as file:
             file.write(xml_response)
 
-    def run(self, export_results=False, run_test=None, screenshot=False):
+    def run(self, export_results=False, run_test=None):
         try:
             self.create()
             if self.staticCfg and self.staticCfg["disable_dynamic"]:
@@ -180,7 +189,7 @@ class BaseTest(object):
                 self.learn()
             if run_test:
                 for i in run_test:
-                    self.runTest(int(i), screenshot=screenshot)
+                    self.runTest(int(i))
             else:
                 self.runAllTests()
             if export_results:
