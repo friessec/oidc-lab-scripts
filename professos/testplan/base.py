@@ -131,7 +131,7 @@ class BaseTest(object):
         result_status = result['Result']
         print(" - {}".format(result_status))
         if screenshot:
-            # print("{}".format(json.dumps(result['LogEntry'], indent=4)))
+            #print("{}".format(json.dumps(result['LogEntry'], indent=4)))
             cnt = 0
             for entry in result['LogEntry']:
                 if entry["Screenshot"]:

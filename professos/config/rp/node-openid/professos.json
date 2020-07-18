@@ -1,0 +1,9 @@
+{
+  "UrlClientTarget": "https://express-openid-client/login",
+  "InputFieldName": "",
+  "SeleniumScript": "",
+  "FinalValidUrl": "https://express-openid-client/",
+  "HonestUserNeedle": "honest-op-test-subject",
+  "EvilUserNeedle": "evil-op-test-subject",
+  "ProfileUrl": "https://express-openid-client/profile"
+}
