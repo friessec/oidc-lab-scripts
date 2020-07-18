@@ -1,5 +1,5 @@
 {
-  "testId": "angular-auth-oidc",
+  "testId": "angular-oauth2-oidc",
   "skipTests": "",
   "disable_dynamic": true
 }
