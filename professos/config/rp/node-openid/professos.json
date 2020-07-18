@@ -3,7 +3,7 @@
   "InputFieldName": "",
   "SeleniumScript": "",
   "FinalValidUrl": "https://express-openid-client/",
-  "HonestUserNeedle": "honest-op-test-subject",
-  "EvilUserNeedle": "evil-op-test-subject",
+  "HonestUserNeedle": "{sub=honest-op-test-subject, name='Honest User'}",
+  "EvilUserNeedle": "{sub=evil-op-test-subject,  name='Evil User'}",
   "ProfileUrl": "https://express-openid-client/profile"
 }

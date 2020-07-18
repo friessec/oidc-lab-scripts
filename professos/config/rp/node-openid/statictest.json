@@ -1,5 +1,5 @@
 {
   "testId": "node-openid",
-  "skipTests": "",
+  "skipTests": "0",
   "disable_dynamic": true
 }
