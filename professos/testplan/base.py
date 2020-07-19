@@ -78,6 +78,17 @@ class BaseTest(object):
             raise requests.RequestException('GET {} Error {}'.format(url, response.status_code))
         print("{}".format(json.dumps(response.json(), indent=4)))
 
+    def expose_discovery(self, id=0):
+        testStep = self.testObj["TestReport"]["TestStepResult"][id]
+
+        test = testStep['StepReference']['Name']
+
+        url = self.profapi + '/' + self.target_type + '/' + self.testId + '/expose/' + test
+
+        response = requests.post(url)
+        if response.status_code != 200 and response.status_code != 204:
+            raise requests.RequestException('POST {} Error {}'.format(url, response.status_code))
+
     def learn(self):
         url = self.profapi + '/' + self.target_type + '/' + self.testId + '/learn'
         header = {"Content-type": "application/json"}
@@ -185,6 +196,7 @@ class BaseTest(object):
             self.create()
             if self.staticCfg and self.staticCfg["disable_dynamic"]:
                 self.set_config()
+                self.expose_discovery(0)
             else:
                 self.learn()
             if run_test:
