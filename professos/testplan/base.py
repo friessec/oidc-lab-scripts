@@ -127,6 +127,8 @@ class BaseTest(object):
                 self.runTest(i)
 
     def runTest(self, id):
+        if self.staticCfg and self.staticCfg["preExpose"]:
+            self.expose_discovery(id)
         print('='*80)
         testStep = self.testObj["TestReport"]["TestStepResult"][id]
 
@@ -201,8 +203,6 @@ class BaseTest(object):
                 self.learn()
             if run_test:
                 for i in run_test:
-                    if self.staticCfg and self.staticCfg["disable_dynamic"]:
-                        self.expose_discovery(int(i))
                     self.runTest(int(i))
             else:
                 self.runAllTests()

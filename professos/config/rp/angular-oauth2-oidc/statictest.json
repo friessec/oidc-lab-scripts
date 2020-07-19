@@ -1,5 +1,6 @@
 {
   "testId": "angular-oauth2-oidc",
   "skipTests": "",
-  "disable_dynamic": true
+  "disable_dynamic": true,
+  "preExpose": true
 }
