@@ -82,7 +82,7 @@ class BaseTest(object):
         testStep = self.testObj["TestReport"]["TestStepResult"][id]
 
         test = testStep['StepReference']['Name']
-
+        #print("Expose discovery for Test: {}".format(test))
         url = self.profapi + '/' + self.target_type + '/' + self.testId + '/expose/' + test
 
         response = requests.post(url)
@@ -201,6 +201,8 @@ class BaseTest(object):
                 self.learn()
             if run_test:
                 for i in run_test:
+                    if self.staticCfg and self.staticCfg["disable_dynamic"]:
+                        self.expose_discovery(int(i))
                     self.runTest(int(i))
             else:
                 self.runAllTests()
