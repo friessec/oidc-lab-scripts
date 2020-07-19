@@ -127,7 +127,7 @@ class BaseTest(object):
                 self.runTest(i)
 
     def runTest(self, id):
-        if self.staticCfg and self.staticCfg["preExpose"]:
+        if self.staticCfg and self.staticCfg.get("preExpose"):
             self.expose_discovery(id)
         print('='*80)
         testStep = self.testObj["TestReport"]["TestStepResult"][id]
