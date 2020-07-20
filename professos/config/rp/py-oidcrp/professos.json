@@ -3,7 +3,7 @@
   "InputFieldName": null,
   "SeleniumScript": "var iss=document.getElementsByName('iss')[0].value='§browser-input-op_url§';\ndocument.forms[0].submit();\n",
   "FinalValidUrl": "https://py-oidcrp/professos",
-  "HonestUserNeedle": "{sub=honest-op-test-subject, iss=https://honest-idp.professos/l1umWaH-zcw}",
-  "EvilUserNeedle": "{sub=evil-op-test-subject, iss=https://attack-idp.professos/l1umWaH-zcw}",
+  "HonestUserNeedle": "{sub=honest-op-test-subject, iss=https://honest-idp.professos/py-oidcrp}",
+  "EvilUserNeedle": "{sub=evil-op-test-subject, iss=https://attack-idp.professos/py-oidcrp}",
   "ProfileUrl": "https://py-oidcrp/professos"
 }
