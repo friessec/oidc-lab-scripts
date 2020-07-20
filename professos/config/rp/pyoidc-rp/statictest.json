@@ -1,5 +1,5 @@
 {
   "testId": "pyoidc-rp",
   "skipTests": "",
-  "disable_dynamic": true
+  "disable_dynamic": false
 }

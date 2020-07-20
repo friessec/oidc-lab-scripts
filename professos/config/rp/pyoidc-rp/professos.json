@@ -2,8 +2,8 @@
   "UrlClientTarget": "https://pyoidc-rp/",
   "InputFieldName": null,
   "SeleniumScript": "var iss=document.getElementsByName('iss')[0].value='§browser-input-op_url§';\ndocument.forms[0].submit();\n",
-  "FinalValidUrl": "https://pyoidc-rp/",
-  "HonestUserNeedle": "{sub=honest-op-test-subject, iss=https://honest-idp.professos/pyoidc-rp}",
-  "EvilUserNeedle": "{sub=evil-op-test-subject, iss=https://attack-idp.professos/pyoidc-rp}",
-  "ProfileUrl": "https://pyoidc-rp/"
+  "FinalValidUrl": "https://pyoidc-rp/profile",
+  "HonestUserNeedle": "{'email': 'user@honest.com', 'name': 'Honest User', 'preferred_username': 'honest-user-name', 'sub': 'honest-op-test-subject'}",
+  "EvilUserNeedle": "{'email': 'user@evil.com', 'name': 'Evil User', 'preferred_username': 'evil-user-name', 'sub': 'evil-op-test-subject'}",
+  "ProfileUrl": "https://pyoidc-rp/profile"
 }
