@@ -96,11 +96,6 @@ class BaseTest(object):
         jsonFile = open("config/" + self.target_type + "/" + self.target_name + "/professos.json", "r+")
         jsoncfg = json.load(jsonFile)
 
-        if self.target_type == "rp":
-            #FIXME update only ISS if available
-            jsoncfg["HonestUserNeedle"] = "{sub=honest-op-test-subject, iss=https://honest-idp.professos/" + self.testId + "}"
-            jsoncfg["EvilUserNeedle"] = "{sub=evil-op-test-subject, iss=https://attack-idp.professos/" + self.testId + "}"
-
         payload = self.testObj["TestConfig"]
         payload.update(jsoncfg)
 
