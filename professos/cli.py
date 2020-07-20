@@ -26,6 +26,9 @@ if __name__ == '__main__':
     parser.add_argument('--export', action='store_true',
                         default=False,
                         help='export result to file')
+    parser.add_argument('--prepare', action='store_true',
+                        default=False,
+                        help='prepare only for RP tests')
     parser.add_argument('--test', help="A comma separated list of tests which should run", type=lambda x: x.split(','))
     args = parser.parse_args()
 
@@ -41,6 +44,10 @@ if __name__ == '__main__':
         obj = OpTest(professos_url, args.config)
     else:
         obj = RpTest(professos_url, args.config)
+
+    if args.prepare and args.rp:
+        obj.prepare()
+        sys.exit(0)
 
     if args.test:
         obj.run(run_test=args.test, export_results=args.export)

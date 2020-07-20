@@ -208,3 +208,13 @@ class BaseTest(object):
             print(str(e))
         finally:
             self.clean()
+
+    def prepare(self):
+        try:
+            self.create()
+            if self.staticCfg and self.staticCfg["disable_dynamic"]:
+                self.set_config()
+            self.expose_discovery(0)
+        except requests.RequestException as e:
+            print("Received error from Professos")
+            print(str(e))
