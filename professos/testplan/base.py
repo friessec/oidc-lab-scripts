@@ -193,8 +193,10 @@ class BaseTest(object):
             self.create()
             if self.staticCfg and self.staticCfg["disable_dynamic"]:
                 self.set_config()
-                self.expose_discovery(0)
+                if self.target_type == "rp":
+                    self.expose_discovery(0)
             else:
+                #self.set_config()
                 self.learn()
             if run_test:
                 for i in run_test:
