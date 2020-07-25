@@ -206,5 +206,5 @@ cython_debug/
 
 
 # results
-/professos/results/op
-/professos/results/rp
+/results/op
+/results/rp
