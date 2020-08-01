@@ -106,6 +106,13 @@ class BaseTest(object):
             raise requests.RequestException('POST {} Error {}'.format(url, response.status_code))
         self.initialized = True
 
+        result = response.json()
+        if result["TestStepResult"]["Result"] != "PASS":
+            print("Learn failed: {}".format(json.dumps(response.json(), indent=4)))
+            raise requests.RequestException("Test Failed")
+
+
+
     def runAllTests(self):
         skip_tests = None
         if self.staticCfg and self.staticCfg['skipTests'] != "":
