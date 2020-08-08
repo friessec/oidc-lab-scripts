@@ -11,22 +11,24 @@
 <h1>Report for {{title}}</h1>
 
 
-<div class="accordion" id="accordionExample">
+<div class="accordion" id="testResults">
+    {% for result in results['TestReport']['TestStepResult'] %}
     <div class="card">
-        <div class="card-header" id="headingOne">
+        <div class="card-header" id="heading{{ loop.index }}">
             <h2 class="mb-0">
-                <button class="btn btn-link btn-block text-left collapsed" type="button" data-toggle="collapse" data-target="#collapseOne" aria-expanded="false" aria-controls="collapseOne">
-                    Collapsible Group Item #1
+                <button class="btn btn-link btn-block text-left collapsed" type="button" data-toggle="collapse" data-target="#collapse{{ loop.index }}" aria-expanded="false" aria-controls="collapse{{ loop.index }}">
+                    {{ result['StepReference']['Name'] }}
                 </button>
             </h2>
         </div>
 
-        <div id="collapseOne" class="collapse" aria-labelledby="headingOne" data-parent="#accordionExample">
+        <div id="collapse{{ loop.index }}" class="collapse" aria-labelledby="heading{{ loop.index }}" data-parent="#testResults">
             <div class="card-body">
-
+                abc
             </div>
         </div>
     </div>
+    {% endfor %}
 </div>
 
 <!-- Optional JavaScript -->
