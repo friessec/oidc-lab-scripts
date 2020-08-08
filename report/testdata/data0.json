@@ -1,0 +1,280 @@
+[
+    {
+        "Date": 1596862986588,
+        "Text": "Obtaining permission to perform test from url 'https://gravitee/.professos'.",
+        "CodeBlock": null,
+        "Screenshot": null,
+        "HttpRequest": null,
+        "HttpResponse": null
+    },
+    {
+        "Date": 1596862987310,
+        "Text": "Start user authentication for PrOfESSOS Honest Test-Client with username: alice",
+        "CodeBlock": null,
+        "Screenshot": null,
+        "HttpRequest": null,
+        "HttpResponse": null
+    },
+    {
+        "Date": 1596862987310,
+        "Text": null,
+        "CodeBlock": {
+            "Description": "Authentication Request URL:",
+            "Content": "https://gravitee/am/profnet/oauth/authorize?scope=openid+profile&response_type=code&redirect_uri=https%3A%2F%2Frp.professos%2F3qwg23sKY7w%2Fcallback&state=uaEDCJ1unu72YkVOpVf_S0RuNEl1g5VHMjSX57tLOGs&nonce=iQ6FqDt0P1UxGYF_0IHvfJbWGTuh7dhSjbFDuSrRTtk&client_id=hdgiN6uiQbgo3TxNNtk3K2MvUVfR9snAvDn9Qodh38o"
+        },
+        "Screenshot": null,
+        "HttpRequest": null,
+        "HttpResponse": null
+    },
+    {
+        "Date": 1596862988945,
+        "Text": "Login Credentials entered",
+        "CodeBlock": null,
+        "Screenshot": null,
+        "HttpRequest": null,
+        "HttpResponse": null
+    },
+    {
+        "Date": 1596862990475,
+        "Text": "No consent page encountered in browser",
+        "CodeBlock": null,
+        "Screenshot": null,
+        "HttpRequest": null,
+        "HttpResponse": null
+    },
+    {
+        "Date": 1596862990478,
+        "Text": null,
+        "CodeBlock": {
+            "Description": "Final URL as seen in Browser:",
+            "Content": "https://rp.professos/3qwg23sKY7w/callback?code=r5iYowPUKkk0eG6-uTva9NDpUfBa0sb6dbodgbBn8U0&state=uaEDCJ1unu72YkVOpVf_S0RuNEl1g5VHMjSX57tLOGs"
+        },
+        "Screenshot": null,
+        "HttpRequest": null,
+        "HttpResponse": null
+    },
+    {
+        "Date": 1596862990478,
+        "Text": null,
+        "CodeBlock": {
+            "Description": "Authentication Success Response received:",
+            "Content": "code: r5iYowPUKkk0eG6-uTva9NDpUfBa0sb6dbodgbBn8U0, state: uaEDCJ1unu72YkVOpVf_S0RuNEl1g5VHMjSX57tLOGs"
+        },
+        "Screenshot": null,
+        "HttpRequest": null,
+        "HttpResponse": null
+    },
+    {
+        "Date": 1596862990478,
+        "Text": "Token request prepared.",
+        "CodeBlock": null,
+        "Screenshot": null,
+        "HttpRequest": null,
+        "HttpResponse": null
+    },
+    {
+        "Date": 1596862990478,
+        "Text": null,
+        "CodeBlock": null,
+        "Screenshot": null,
+        "HttpRequest": {
+            "RequestLine": "POST /am/profnet/oauth/token",
+            "Header": [
+                {
+                    "value": "https",
+                    "Key": "X-Protocol-Scheme"
+                },
+                {
+                    "value": "-1",
+                    "Key": "X-Protocol-Port"
+                },
+                {
+                    "value": "Basic aGRnaU42dWlRYmdvM1R4Tk50azNLMk12VVZmUjlzbkF2RG45UW9kaDM4bzpWLUZRbFdhZW9TR2lxV2hoZlBodllaYkptanJvZWtMY0luSzlNclcxbVNJ",
+                    "Key": "Authorization"
+                },
+                {
+                    "value": "application/x-www-form-urlencoded; charset=UTF-8",
+                    "Key": "Content-Type"
+                },
+                {
+                    "value": "HONEST-RP",
+                    "Key": "X-Prof-Sender"
+                }
+            ],
+            "Body": "code=r5iYowPUKkk0eG6-uTva9NDpUfBa0sb6dbodgbBn8U0&redirect_uri=https%3A%2F%2Frp.professos%2F3qwg23sKY7w%2Fcallback&grant_type=authorization_code"
+        },
+        "HttpResponse": null
+    },
+    {
+        "Date": 1596862990572,
+        "Text": "Code redeemed for Token:",
+        "CodeBlock": null,
+        "Screenshot": null,
+        "HttpRequest": null,
+        "HttpResponse": null
+    },
+    {
+        "Date": 1596862990573,
+        "Text": null,
+        "CodeBlock": null,
+        "Screenshot": null,
+        "HttpRequest": null,
+        "HttpResponse": {
+            "Status": 200,
+            "Header": [
+                {
+                    "value": "no-store",
+                    "Key": "Cache-Control"
+                },
+                {
+                    "value": "application/json; charset=UTF-8",
+                    "Key": "Content-Type"
+                },
+                {
+                    "value": "no-cache",
+                    "Key": "Pragma"
+                }
+            ],
+            "Body": "\n{\n    \"access_token\": \"eyJraWQiOiJkZWZhdWx0IiwiYWxnIjoiUlMyNTYifQ.eyJzdWIiOiJlYWRhMDUwZS0zMGY5LTRmZjQtOWEwNS0wZTMwZjlmZmY0ZjYiLCJhdWQiOiJoZGdpTjZ1aVFiZ28zVHhOTnRrM0syTXZVVmZSOXNuQXZEbjlRb2RoMzhvIiwiZG9tYWluIjoicHJvZm5ldCIsInNjb3BlIjoib3BlbmlkIHByb2ZpbGUiLCJpc3MiOiJodHRwczovL2dyYXZpdGVlL2FtL3Byb2ZuZXQvb2lkYyIsImV4cCI6MTU5Njg3MDE5MCwiaWF0IjoxNTk2ODYyOTkwLCJqdGkiOiJQYy1LblhmckxRVzhPS21Gb25oVERyUW1Xd2hycGdpOXpMc25oeWhKbWhFIn0.KNjLRaNOA3nrTe4upyaU9nUCuGNsLtC6lC3tolrMiOhzrfCsPpIyp-jfyLApH3tKpWNgan7WikxHM-D0dZ4ZgLqHi2TsqRa6EMXn-ZJU3qYJoBGLym-G323J_WhbdOsCNG7xT0kR_yG0e8yxSAhONOzYJdHjToe9dfDDMOAtXX8nNFdkwWub__rhc_SCipfgABO-ZQUJH32Pf1V7BUew4Qg3ITFftCxXbKCuL7fb3u-z9zQxNunu38Ea7TzXCzLzGffG4byNKhsVkwCnSclF1fS_5CKQSM3gkQSJcUVPaxPXTx1wEz663fEQ45kHZc-L9CyH5r5zX02BuQSk7pV62A\",\n    \"scope\": \"openid profile\",\n    \"id_token\": \"eyJraWQiOiJkZWZhdWx0IiwiYWxnIjoiUlMyNTYifQ.eyJzdWIiOiJlYWRhMDUwZS0zMGY5LTRmZjQtOWEwNS0wZTMwZjlmZmY0ZjYiLCJhdWQiOiJoZGdpTjZ1aVFiZ28zVHhOTnRrM0syTXZVVmZSOXNuQXZEbjlRb2RoMzhvIiwidXBkYXRlZF9hdCI6MTU5MTM0MzcwNDkyOSwiaXNzIjoiaHR0cHM6Ly9ncmF2aXRlZS9hbS9wcm9mbmV0L29pZGMiLCJwcmVmZXJyZWRfdXNlcm5hbWUiOiJhbGljZSIsImV4cCI6MTU5Njg3NzM5MCwiZ2l2ZW5fbmFtZSI6ImFsaWNlIiwiaWF0IjoxNTk2ODYyOTkwLCJub25jZSI6ImlRNkZxRHQwUDFVeEdZRl8wSUh2ZkpiV0dUdWg3ZGhTamJGRHVTclJUdGsiLCJmYW1pbHlfbmFtZSI6Ind1bmRlcmxpY2gifQ.sLMSq2dN2Zdl5HK8UpMHyzmTgjOcTZOtdUqmaGYVoAg3YuSrOJezlSUbooBvwPNpMUVOzzpF2c9wYYbSfdX-o91sz_3uHWyX9axpqcpt53teJffkEWAmDnz4ccxF44SNIfF32W68VZsHXejzlYpQMpGXUpcv6-I5ZP_whx-RYogNRpDF7PDrIXj3r6fmkTbYvC2HF_WCQFJ7-BL1UZAVlW1cpNBdTAWOrTss975i7SxbQO13cWe1FS_b-Kxg12IdgBq1OATWtmVzgdhCpLSqbqNbqF4jvu1xxiW9X5TWfZ-0A_uzqRaMhSD8dAo5vtthCZgtXhYd_GRF7eYluNo2oA\",\n    \"token_type\": \"Bearer\",\n    \"expires_in\": 7199\n}"
+        }
+    },
+    {
+        "Date": 1596862991286,
+        "Text": "Start user authentication for PrOfESSOS Honest Test-Client with username: bob",
+        "CodeBlock": null,
+        "Screenshot": null,
+        "HttpRequest": null,
+        "HttpResponse": null
+    },
+    {
+        "Date": 1596862991286,
+        "Text": null,
+        "CodeBlock": {
+            "Description": "Authentication Request URL:",
+            "Content": "https://gravitee/am/profnet/oauth/authorize?scope=openid+profile&response_type=code&redirect_uri=https%3A%2F%2Frp.professos%2F3qwg23sKY7w%2Fcallback&state=uaEDCJ1unu72YkVOpVf_S0RuNEl1g5VHMjSX57tLOGs&nonce=iQ6FqDt0P1UxGYF_0IHvfJbWGTuh7dhSjbFDuSrRTtk&client_id=hdgiN6uiQbgo3TxNNtk3K2MvUVfR9snAvDn9Qodh38o"
+        },
+        "Screenshot": null,
+        "HttpRequest": null,
+        "HttpResponse": null
+    },
+    {
+        "Date": 1596862992884,
+        "Text": "Login Credentials entered",
+        "CodeBlock": null,
+        "Screenshot": null,
+        "HttpRequest": null,
+        "HttpResponse": null
+    },
+    {
+        "Date": 1596862994420,
+        "Text": "No consent page encountered in browser",
+        "CodeBlock": null,
+        "Screenshot": null,
+        "HttpRequest": null,
+        "HttpResponse": null
+    },
+    {
+        "Date": 1596862994423,
+        "Text": null,
+        "CodeBlock": {
+            "Description": "Final URL as seen in Browser:",
+            "Content": "https://rp.professos/3qwg23sKY7w/callback?code=FbKs9A9ubbS5m9ezgkskuAg1gfMAkex3OVILMq3aPkk&state=uaEDCJ1unu72YkVOpVf_S0RuNEl1g5VHMjSX57tLOGs"
+        },
+        "Screenshot": null,
+        "HttpRequest": null,
+        "HttpResponse": null
+    },
+    {
+        "Date": 1596862994423,
+        "Text": null,
+        "CodeBlock": {
+            "Description": "Authentication Success Response received:",
+            "Content": "code: FbKs9A9ubbS5m9ezgkskuAg1gfMAkex3OVILMq3aPkk, state: uaEDCJ1unu72YkVOpVf_S0RuNEl1g5VHMjSX57tLOGs"
+        },
+        "Screenshot": null,
+        "HttpRequest": null,
+        "HttpResponse": null
+    },
+    {
+        "Date": 1596862994424,
+        "Text": "Token request prepared.",
+        "CodeBlock": null,
+        "Screenshot": null,
+        "HttpRequest": null,
+        "HttpResponse": null
+    },
+    {
+        "Date": 1596862994424,
+        "Text": null,
+        "CodeBlock": null,
+        "Screenshot": null,
+        "HttpRequest": {
+            "RequestLine": "POST /am/profnet/oauth/token",
+            "Header": [
+                {
+                    "value": "https",
+                    "Key": "X-Protocol-Scheme"
+                },
+                {
+                    "value": "-1",
+                    "Key": "X-Protocol-Port"
+                },
+                {
+                    "value": "Basic aGRnaU42dWlRYmdvM1R4Tk50azNLMk12VVZmUjlzbkF2RG45UW9kaDM4bzpWLUZRbFdhZW9TR2lxV2hoZlBodllaYkptanJvZWtMY0luSzlNclcxbVNJ",
+                    "Key": "Authorization"
+                },
+                {
+                    "value": "application/x-www-form-urlencoded; charset=UTF-8",
+                    "Key": "Content-Type"
+                },
+                {
+                    "value": "HONEST-RP",
+                    "Key": "X-Prof-Sender"
+                }
+            ],
+            "Body": "code=r5iYowPUKkk0eG6-uTva9NDpUfBa0sb6dbodgbBn8U0&redirect_uri=https%3A%2F%2Frp.professos%2F3qwg23sKY7w%2Fcallback&grant_type=authorization_code"
+        },
+        "HttpResponse": null
+    },
+    {
+        "Date": 1596862994554,
+        "Text": "Code redemption failed",
+        "CodeBlock": null,
+        "Screenshot": null,
+        "HttpRequest": null,
+        "HttpResponse": null
+    },
+    {
+        "Date": 1596862994554,
+        "Text": null,
+        "CodeBlock": null,
+        "Screenshot": null,
+        "HttpRequest": null,
+        "HttpResponse": {
+            "Status": 400,
+            "Header": [
+                {
+                    "value": "no-store",
+                    "Key": "Cache-Control"
+                },
+                {
+                    "value": "application/json; charset=UTF-8",
+                    "Key": "Content-Type"
+                },
+                {
+                    "value": "no-cache",
+                    "Key": "Pragma"
+                }
+            ],
+            "Body": "\n{\n    \"error_description\": \"The authorization code r5iYowPUKkk0eG6-uTva9NDpUfBa0sb6dbodgbBn8U0 is invalid.\",\n    \"error\": \"invalid_grant\"\n}"
+        }
+    },
+    {
+        "Date": 1596862994554,
+        "Text": "Redemption of invalid authorization code was rejected by OP",
+        "CodeBlock": null,
+        "Screenshot": null,
+        "HttpRequest": null,
+        "HttpResponse": null
+    }
+]
