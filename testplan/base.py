@@ -157,7 +157,7 @@ class BaseTest(object):
             if path.is_file():
                 path.unlink()
 
-        with open("{}/result.xml".format(directory), "w") as file:
+        with open("{}/result.json".format(directory), "w") as file:
             file.write(json.dumps(result['LogEntry'], indent=4))
 
         cnt = 0
