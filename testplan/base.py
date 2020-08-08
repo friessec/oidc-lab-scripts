@@ -180,20 +180,19 @@ class BaseTest(object):
                 print('-' * 80)
 
     def export_result(self):
-        url = self.profapi + '/' + self.target_type + '/' + self.testId + '/export'
+        url = self.profapi + '/' + self.target_type + '/' + self.testId + '/export-json'
         header = {"Content-Type": "application/json"}
 
         response = requests.get(url, headers=header)
         if response.status_code != 200:
             raise requests.RequestException('GET {} Error {}'.format(url, response.status_code))
-        xml_response = BeautifulSoup(response.content, "xml").prettify()
 
         directory = "results/" + self.target_type + "/" + self.target_name
         if not os.path.exists(directory):
             os.makedirs(directory)
 
-        with open (directory + "/result-" + datetime.now().isoformat(timespec='minutes') + ".xml", "w") as file:
-            file.write(xml_response)
+        with open(directory + "/result-" + datetime.now().isoformat(timespec='minutes') + ".json", "w") as file:
+            json.dump(response.json(), file)
 
     def run(self, export_results=False, run_test=None):
         try:
