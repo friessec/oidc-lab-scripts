@@ -34,6 +34,7 @@ class ReportGenerator(object):
 
 
 if __name__ == "__main__":
+
     report = ReportGenerator()
     report.load_export("result.json")
     report.generate()

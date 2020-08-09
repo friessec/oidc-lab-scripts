@@ -43,11 +43,38 @@
                 <div class="collapse" id="collapseLogEntry">
                     <div class="card card-body">
                         {% for step in result['LogEntry'] %}
-                        LogEntry{{ loop.index }}
+                        <div>
+                            {{ step['Date'] }}
+                        </div>
+                        {% if step['Text'] %}
+                        <div>
+                            {{ step['Text'] }}
+                        </div>
+                        {% endif %}
+                        {% if step['CodeBlock'] %}
+                        <div>
+                            {{ step['CodeBlock'] }}
+                        </div>
+                        {% endif %}
+                        {% if step['Screenshot'] %}
+                        <div>
+                            <img src="data:image/png;base64,{{ step['Screenshot']['Data'] }}">
+                        </div>
+                        {% endif %}
+                        {% if step['HttpRequest'] %}
+                        <div>
+                            {{ step['HttpRequest'] }}
+                        </div>
+                        {% endif %}
+                        {% if step['HttpResponse'] %}
+                        <div>
+                            {{ step['HttpResponse'] }}
+                        </div>
+                        {% endif %}
+                        <hr>
                         {% endfor %}
                     </div>
                 </div>
-
             </div>
         </div>
     </div>
