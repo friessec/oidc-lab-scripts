@@ -4,7 +4,7 @@
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
     <link rel="stylesheet" href="style/bootstrap/4.5.2/css/bootstrap.min.css">
-
+    <link rel="stylesheet" type="text/css" href="style/style.css">
     <title>Report - {{title}}</title>
 </head>
 <body>
@@ -13,18 +13,41 @@
 
 <div class="accordion" id="testResults">
     {% for result in results['TestReport']['TestStepResult'] %}
+    {% set testResult = result['Result'] %}
     <div class="card">
-        <div class="card-header" id="heading{{ loop.index }}">
+        <div class="card-header {% if testResult == 'PASS' %} btn-success {% elif testResult == 'FAIL' %} btn-danger  {% else %} btn-warning {% endif %} text-white"
+             id="heading{{ loop.index }}">
             <h2 class="mb-0">
-                <button class="btn btn-link btn-block text-left collapsed" type="button" data-toggle="collapse" data-target="#collapse{{ loop.index }}" aria-expanded="false" aria-controls="collapse{{ loop.index }}">
-                    {{ result['StepReference']['Name'] }}
+                <button class="btn btn-link {% if testResult == 'PASS' %} btn-success {% elif testResult == 'FAIL' %} btn-danger  {% else %} btn-warning {% endif %} text-white text-left collapsed"
+                        type="button"
+                        data-toggle="collapse" data-target="#collapse{{ loop.index }}" aria-expanded="false"
+                        aria-controls="collapse{{ loop.index }}">
+                    {{ result['StepReference']['Name'] }} - {{ testResult }}
                 </button>
             </h2>
         </div>
 
-        <div id="collapse{{ loop.index }}" class="collapse" aria-labelledby="heading{{ loop.index }}" data-parent="#testResults">
+        <div id="collapse{{ loop.index }}" class="collapse" aria-labelledby="heading{{ loop.index }}"
+             data-parent="#testResults">
             <div class="card-body">
-                abc
+                <div>
+                    {{ result['StepReference']['Description'] }}
+                </div>
+                <br>
+                <p>
+                    <button class="btn btn-primary" type="button" data-toggle="collapse" data-target="#collapseLogEntry"
+                            aria-expanded="false" aria-controls="collapseLogEntry">
+                        Show Details
+                    </button>
+                </p>
+                <div class="collapse" id="collapseLogEntry">
+                    <div class="card card-body">
+                        {% for step in result['LogEntry'] %}
+                        LogEntry{{ loop.index }}
+                        {% endfor %}
+                    </div>
+                </div>
+
             </div>
         </div>
     </div>
