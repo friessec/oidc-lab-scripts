@@ -63,7 +63,19 @@
                         {% endif %}
                         {% if step['HttpRequest'] %}
                         <div>
-                            {{ step['HttpRequest'] }}
+                            <pre>
+                                <code>
+{% for key, value in step['HttpRequest'].items() -%}
+{% if key != 'Header' -%}
+{{ value }}
+{% else -%}
+{% for v in value -%}
+{{ v['Key'] }} {{ v['value'] }}
+{% endfor %}
+{% endif %}
+{% endfor %}
+                                </code>
+                            </pre>
                         </div>
                         {% endif %}
                         {% if step['HttpResponse'] %}
