@@ -53,7 +53,16 @@
                         {% endif %}
                         {% if step['CodeBlock'] %}
                         <div class="card-body">
-                            {{ step['CodeBlock'] }}
+                            <table class="table">
+                                <tr>
+                                    <td>Description</td>
+                                    <td>{{ step['CodeBlock']['Description'] }}</td>
+                                </tr>
+                                <tr>
+                                    <td>Content</td>
+                                    <td>{{ step['CodeBlock']['Content'] }}</td>
+                                </tr>
+                            </table>
                         </div>
                         {% endif %}
                         {% if step['Screenshot'] %}
