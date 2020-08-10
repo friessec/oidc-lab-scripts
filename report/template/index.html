@@ -43,44 +43,56 @@
                 <div class="collapse" id="collapseLogEntry">
                     <div class="card card-body">
                         {% for step in result['LogEntry'] %}
-                        <div>
-                            {{ step['Date'] }}
+                        <div class="card-header">
+                            Timestamp {{ step['Date'] }}
                         </div>
                         {% if step['Text'] %}
-                        <div>
+                        <div class="card-body">
                             {{ step['Text'] }}
                         </div>
                         {% endif %}
                         {% if step['CodeBlock'] %}
-                        <div>
+                        <div class="card-body">
                             {{ step['CodeBlock'] }}
                         </div>
                         {% endif %}
                         {% if step['Screenshot'] %}
-                        <div>
+                        <div class="card-body">
                             <img src="data:image/png;base64,{{ step['Screenshot']['Data'] }}">
                         </div>
                         {% endif %}
                         {% if step['HttpRequest'] %}
-                        <div>
+                        <div class="card-body">
+                            <h4>Request</h4>
                             <pre>
                                 <code>
 {% for key, value in step['HttpRequest'].items() -%}
 {% if key != 'Header' -%}
 {{ value }}
-{% else -%}
+{% else %}
 {% for v in value -%}
 {{ v['Key'] }} {{ v['value'] }}
 {% endfor %}
-{% endif %}
-{% endfor %}
-                                </code>
+{% endif -%}
+{% endfor -%}                    </code>
                             </pre>
                         </div>
                         {% endif %}
                         {% if step['HttpResponse'] %}
                         <div>
-                            {{ step['HttpResponse'] }}
+                            <h4>Response</h4>
+                            <pre>
+                                <code>
+{% for key, value in step['HttpResponse'].items() -%}
+{% if key != 'Header' -%}
+{{ value }}
+{% else %}
+{% for v in value -%}
+{{ v['Key'] }} {{ v['value'] }}
+{% endfor %}
+{% endif -%}
+{% endfor -%}                    </code>
+                            </pre>
                         </div>
                         {% endif %}
                         <hr>
