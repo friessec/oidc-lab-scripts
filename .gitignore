@@ -206,7 +206,5 @@ cython_debug/
 
 
 # results
-/results/op
-/results/rp
-
+/results
 /report/output
