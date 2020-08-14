@@ -3,7 +3,8 @@
 import os
 import sys
 import argparse
-
+import cmd2
+from cmd2 import style, fg, bg
 
 from testplan.op import OpTest
 from testplan.rp import RpTest
@@ -12,8 +13,33 @@ from testplan.rp import RpTest
 professos_url = "http://localhost:8888/api"
 #professos_url = "https://openid.professos/api"
 
+
+class Cli(cmd2.Cmd):
+    def __init__(self):
+        # add shortcuts
+        shortcuts = dict(cmd2.DEFAULT_SHORTCUTS)
+        shortcuts.update({'ll': 'list'})
+
+        super().__init__(use_ipython=True,
+                         multiline_commands=['orate'],
+                         shortcuts=shortcuts)
+
+        self.intro = style('Starting Control Center for Professos!', fg=fg.green, bold=True)
+        self.prompt = 'cli> '
+
+    list_parser = argparse.ArgumentParser()
+    list_parser.add_subparsers(title='list', help='list help')
+    list_parser.add_argument('op', type=str, help='Input File')
+
+    @cmd2.with_argparser(list_parser)
+    def do_list(self, args):
+        """ list available configs and reports """
+        self.poutput(cmd2.style('foo bar baz', fg=cmd2.fg.green))
+
 if __name__ == '__main__':
     print("[*] Professos CLI started")
+    app = Cli()
+    sys.exit(app.cmdloop())
 
     parser = argparse.ArgumentParser(description='Professos command line interface.')
     parser.add_argument('config', type=str, help='Configuration to run')
