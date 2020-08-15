@@ -4,23 +4,23 @@ import os
 import sys
 import argparse
 import cmd2
-from cmd2 import style, fg, bg, CommandSet, with_argparser, with_category, with_default_category
+from cmd2 import style, fg, with_argparser, with_category
 
 from api.op import OpTest
 from api.rp import RpTest
-
-
-professos_url = "http://localhost:8888/api"
-#professos_url = "https://openid.professos/api"
 
 
 class Cli(cmd2.Cmd):
     DEFAULT_CATEGORY = 'General'
 
     def __init__(self):
+        # TODO make professos api configurable
+        self.professos_url = "http://localhost:8888/api"
+        #professos_url = "https://openid.professos/api"
+
         # add shortcuts
         shortcuts = dict(cmd2.DEFAULT_SHORTCUTS)
-        shortcuts.update({'ll': 'list'})
+        shortcuts.update({'ll': 'list', 'ls': 'list'})
 
         super().__init__(use_ipython=True,
                          multiline_commands=['orate'],
@@ -29,6 +29,8 @@ class Cli(cmd2.Cmd):
         self.intro = style('Starting Control Center for Professos!', fg=fg.green, bold=True)
         self.prompt = 'cli> '
         self.default_category = 'Others'
+
+        self._testModule = None
 
     list_parser = cmd2.Cmd2ArgumentParser('list')
     # list_parser.add_argument('action', choices=['configs', 'results'], help='')
@@ -45,13 +47,45 @@ class Cli(cmd2.Cmd):
         for cfg in os.listdir(cfg_path):
             self.poutput(cmd2.style(cfg, fg=cmd2.fg.green))
 
+    load_parser = cmd2.Cmd2ArgumentParser('load')
+    load_parser.add_argument('target', choices=['op', 'rp'])
+    load_parser.add_argument('name', type=str)
+
+    @with_argparser(load_parser)
+    @with_category('Command Loading')
+    def do_load(self, ns: argparse.Namespace):
+        cfg_path = "config/" + ns.target + "/" + ns.name + "/professos.json"
+        if not os.path.exists(cfg_path):
+            self.perror(cmd2.style('No {} target named {} found!'.format(ns.target, ns.name), fg=cmd2.fg.red))
+            return
+
+        if self._testModule:
+            self.unregister_command_set(self._testModule)
+            self._testModule = None
+
+        if ns.target == 'op':
+            self._testModule = OpTest(self.professos_url, ns.name)
+        else:
+            self._testModule = RpTest(self.professos_url, ns.name)
+        try:
+            self.register_command_set(self._testModule)
+            self.poutput('')
+        except ValueError:
+            self.poutput('Module already loaded')
+
+    @with_category('Command Loading')
+    def do_unload(self, ns: argparse.Namespace):
+        if self._testModule:
+            self.unregister_command_set(self._testModule)
+            self._testModule = None
+            self.poutput('Module unloaded')
+
 
 if __name__ == '__main__':
     print("[*] Professos CLI started")
     app = Cli()
     sys.exit(app.cmdloop())
 
-    parser = argparse.ArgumentParser(description='Professos command line interface.')
     parser.add_argument('config', type=str, help='Configuration to run')
     parser.add_argument('--op', action='store_true',
                     default=False,
@@ -66,15 +100,7 @@ if __name__ == '__main__':
                         default=False,
                         help='prepare only for RP tests')
     parser.add_argument('--test', help="A comma separated list of tests which should run", type=lambda x: x.split(','))
-    args = parser.parse_args()
 
-    if args.rp == args.op:   # xor
-        print("Choose OP or RP tests")
-        sys.exit(-1)
-
-    if not os.path.exists("config/op/" if args.op else "config/rp/" + args.config ):
-        print("No configuration found for: ", args.config)
-        sys.exit(-1)
 
     if args.op:
         obj = OpTest(professos_url, args.config)

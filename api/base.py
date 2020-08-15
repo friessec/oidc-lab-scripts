@@ -2,15 +2,20 @@ import requests
 import json
 import time
 import os
+import argparse
+import cmd2
 import base64
-from bs4 import BeautifulSoup
+
 from datetime import datetime
 from pathlib import Path
+from cmd2 import CommandSet, with_argparser, with_category, with_default_category
 
 
-class BaseTest(object):
+@with_default_category('Module')
+class BaseTest(CommandSet):
 
     def __init__(self, profapi, target_type, target_name):
+        super().__init__()
         self.profapi = profapi
         self.target_type = target_type
         self.target_name = target_name
@@ -18,6 +23,7 @@ class BaseTest(object):
         self.testObj = None
         self.staticCfg = None
         self.initialized = False
+
 
     def create(self):
         url = self.profapi + '/' + self.target_type + '/create-test-object'
