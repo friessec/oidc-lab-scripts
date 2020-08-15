@@ -4,7 +4,7 @@ import os
 import sys
 import argparse
 import cmd2
-from cmd2 import style, fg, bg
+from cmd2 import style, fg, bg, CommandSet, with_argparser, with_category, with_default_category
 
 from testplan.op import OpTest
 from testplan.rp import RpTest
@@ -15,6 +15,8 @@ professos_url = "http://localhost:8888/api"
 
 
 class Cli(cmd2.Cmd):
+    DEFAULT_CATEGORY = 'General'
+
     def __init__(self):
         # add shortcuts
         shortcuts = dict(cmd2.DEFAULT_SHORTCUTS)
@@ -26,15 +28,23 @@ class Cli(cmd2.Cmd):
 
         self.intro = style('Starting Control Center for Professos!', fg=fg.green, bold=True)
         self.prompt = 'cli> '
+        self.default_category = 'Others'
 
-    list_parser = argparse.ArgumentParser()
-    list_parser.add_subparsers(title='list', help='list help')
-    list_parser.add_argument('op', type=str, help='Input File')
+    list_parser = cmd2.Cmd2ArgumentParser('list')
+    # list_parser.add_argument('action', choices=['configs', 'results'], help='')
+    list_parser.add_argument('target', choices=['op', 'rp'], help='')
 
-    @cmd2.with_argparser(list_parser)
-    def do_list(self, args):
-        """ list available configs and reports """
-        self.poutput(cmd2.style('foo bar baz', fg=cmd2.fg.green))
+    @with_argparser(list_parser)
+    @with_category(DEFAULT_CATEGORY)
+    def do_list(self, ns: argparse.Namespace):
+        """ show available configurations """
+        cfg_path = "config/" + ns.target
+
+        self.poutput("\nAvailable configurations:")
+        self.poutput("==========================\n")
+        for cfg in os.listdir(cfg_path):
+            self.poutput(cmd2.style(cfg, fg=cmd2.fg.green))
+
 
 if __name__ == '__main__':
     print("[*] Professos CLI started")
