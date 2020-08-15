@@ -16,7 +16,6 @@ class Cli(cmd2.Cmd):
     def __init__(self):
         # TODO make professos api configurable
         self.professos_url = "http://localhost:8888/api"
-        #professos_url = "https://openid.professos/api"
 
         # add shortcuts
         shortcuts = dict(cmd2.DEFAULT_SHORTCUTS)
@@ -33,7 +32,6 @@ class Cli(cmd2.Cmd):
         self._testModule = None
 
     list_parser = cmd2.Cmd2ArgumentParser('list')
-    # list_parser.add_argument('action', choices=['configs', 'results'], help='')
     list_parser.add_argument('target', choices=['op', 'rp'], help='')
 
     @with_argparser(list_parser)
@@ -70,6 +68,7 @@ class Cli(cmd2.Cmd):
         try:
             self.register_command_set(self._testModule)
             self.poutput('')
+            self.prompt = 'cli> {} > {} > '.format(ns.target, ns.name)
         except ValueError:
             self.poutput('Module already loaded')
 
@@ -79,6 +78,7 @@ class Cli(cmd2.Cmd):
             self.unregister_command_set(self._testModule)
             self._testModule = None
             self.poutput('Module unloaded')
+            self.prompt = 'cli> '
 
 
 if __name__ == '__main__':
