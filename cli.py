@@ -85,33 +85,3 @@ if __name__ == '__main__':
     print("[*] Professos CLI started")
     app = Cli()
     sys.exit(app.cmdloop())
-
-    parser.add_argument('config', type=str, help='Configuration to run')
-    parser.add_argument('--op', action='store_true',
-                    default=False,
-                    help='op tests')
-    parser.add_argument('--rp', action='store_true',
-                        default=False,
-                        help='rp tests')
-    parser.add_argument('--export', action='store_true',
-                        default=False,
-                        help='export result to file')
-    parser.add_argument('--prepare', action='store_true',
-                        default=False,
-                        help='prepare only for RP tests')
-    parser.add_argument('--test', help="A comma separated list of tests which should run", type=lambda x: x.split(','))
-
-
-    if args.op:
-        obj = OpTest(professos_url, args.config)
-    else:
-        obj = RpTest(professos_url, args.config)
-
-    if args.prepare and args.rp:
-        obj.prepare()
-        sys.exit(0)
-
-    if args.test:
-        obj.run(run_test=args.test, export_results=args.export)
-    else:
-        obj.run(export_results=args.export)

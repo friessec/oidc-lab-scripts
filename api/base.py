@@ -185,7 +185,7 @@ class BaseTest(CommandSet):
                     print("{}".format(json.dumps(entry['HttpResponse'], indent=2)))
                 print('-' * 80)
 
-    def export_result(self):
+    def do_export(self):
         url = self.profapi + '/' + self.target_type + '/' + self.testId + '/export-json'
         header = {"Content-Type": "application/json"}
 
@@ -200,7 +200,7 @@ class BaseTest(CommandSet):
         with open(directory + "/result-" + datetime.now().isoformat(timespec='minutes') + ".json", "w") as file:
             json.dump(response.json(), file)
 
-    def run(self, export_results=False, run_test=None):
+    def do_run(self, export_results=False, run_test=None):
         try:
             self.create()
             if self.staticCfg and self.staticCfg["disable_dynamic"]:
@@ -216,14 +216,14 @@ class BaseTest(CommandSet):
             else:
                 self.runAllTests()
             if export_results:
-                self.export_result()
+                self.do_export()
         except requests.RequestException as e:
             print("Received error from Professos")
             print(str(e))
         finally:
             self.clean()
 
-    def prepare(self):
+    def do_prepare(self):
         try:
             self.create()
             if self.staticCfg and self.staticCfg["disable_dynamic"]:
@@ -232,3 +232,11 @@ class BaseTest(CommandSet):
         except requests.RequestException as e:
             print("Received error from Professos")
             print(str(e))
+
+    def do_listsessions(self):
+        """ show all sessions """
+        pass
+
+    def do_resume(self):
+        """ resume a session """
+        pass
