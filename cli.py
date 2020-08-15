@@ -64,9 +64,9 @@ class Cli(cmd2.Cmd):
             self._testModule = None
 
         if ns.target == 'op':
-            self._testModule = OpTest(self.professos_url, ns.name)
+            self._testModule = OpTest(self, ns.name)
         else:
-            self._testModule = RpTest(self.professos_url, ns.name)
+            self._testModule = RpTest(self, ns.name)
 
         try:
             self.register_command_set(self._testModule)

@@ -11,15 +11,19 @@ from api.commands import Commands
 
 class Rest(Commands):
 
-    def __init__(self, profapi, target_type, target_name):
+    def __init__(self, cli, target_type, target_name):
         super().__init__()
-        self.profapi = profapi
+        self.cli = cli
+        self.profapi = cli.professos_url
         self.target_type = target_type
         self.target_name = target_name
         self.testId = ""
         self.testObj = None
         self.staticCfg = None
         self.initialized = False
+
+    def show_config(self):
+        self.Commands.poutput('Config')
 
     def create(self):
         url = self.profapi + '/' + self.target_type + '/create-test-object'

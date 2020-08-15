@@ -24,3 +24,14 @@ class Commands(CommandSet):
     def do_resume(self, ns: argparse.Namespace):
         """ resume a session """
         pass
+
+    config_parser = cmd2.Cmd2ArgumentParser('session')
+    config_parser.add_argument('action', choices=['set', 'get', 'list'], help='')
+
+    @with_argparser(config_parser)
+    def do_config(self, ns: argparse.Namespace):
+        self.cli.poutput('Config')
+        if ns.action == 'list':
+            self.show_config()
+        elif ns.action == 'get':
+            pass
