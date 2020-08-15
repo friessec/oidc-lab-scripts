@@ -2,17 +2,14 @@ import requests
 import json
 import time
 import os
-import argparse
-import cmd2
 import base64
 
 from datetime import datetime
 from pathlib import Path
-from cmd2 import CommandSet, with_argparser, with_category, with_default_category
+from api.commands import Commands
 
 
-@with_default_category('Session')
-class BaseTest(CommandSet):
+class BaseTest(Commands):
 
     def __init__(self, profapi, target_type, target_name):
         super().__init__()
@@ -233,19 +230,4 @@ class BaseTest(CommandSet):
             print("Received error from Professos")
             print(str(e))
 
-    def do_listsessions(self, ns: argparse.Namespace):
-        """ show all sessions """
-        pass
-
-    def do_start(self, ns: argparse.Namespace):
-        """ start a new session """
-        pass
-
-    session_parser = cmd2.Cmd2ArgumentParser('session')
-    session_parser.add_argument('name', type=str)
-
-    @with_argparser(session_parser)
-    def do_resume(self, ns: argparse.Namespace):
-        """ resume a session """
-        pass
 
