@@ -65,10 +65,11 @@ class Cli(cmd2.Cmd):
             self._testModule = OpTest(self.professos_url, ns.name)
         else:
             self._testModule = RpTest(self.professos_url, ns.name)
+
         try:
             self.register_command_set(self._testModule)
             self.poutput('')
-            self.prompt = 'cli> {} > {} > '.format(ns.target, ns.name)
+            self.prompt = 'cli>> {}> {}> '.format(ns.target, ns.name)
         except ValueError:
             self.poutput('Module already loaded')
 
