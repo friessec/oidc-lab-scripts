@@ -6,8 +6,8 @@ import argparse
 import cmd2
 from cmd2 import style, fg, bg, CommandSet, with_argparser, with_category, with_default_category
 
-from testplan.op import OpTest
-from testplan.rp import RpTest
+from api.op import OpTest
+from api.rp import RpTest
 
 
 professos_url = "http://localhost:8888/api"
