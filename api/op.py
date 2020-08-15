@@ -1,6 +1,6 @@
-from api.base import BaseTest
+from api.rest import Rest
 
 
-class OpTest(BaseTest):
+class OpTest(Rest):
     def __init__(self, profapi, configname):
         super().__init__(profapi, "op", configname)

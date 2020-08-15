@@ -9,7 +9,7 @@ from pathlib import Path
 from api.commands import Commands
 
 
-class BaseTest(Commands):
+class Rest(Commands):
 
     def __init__(self, profapi, target_type, target_name):
         super().__init__()
