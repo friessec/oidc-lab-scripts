@@ -11,7 +11,7 @@ from pathlib import Path
 from cmd2 import CommandSet, with_argparser, with_category, with_default_category
 
 
-@with_default_category('Module')
+@with_default_category('Session')
 class BaseTest(CommandSet):
 
     def __init__(self, profapi, target_type, target_name):
@@ -237,6 +237,10 @@ class BaseTest(CommandSet):
         """ show all sessions """
         pass
 
+    def do_start(self, ns: argparse.Namespace):
+        """ start a new session """
+        pass
+
     session_parser = cmd2.Cmd2ArgumentParser('session')
     session_parser.add_argument('name', type=str)
 
@@ -244,3 +248,4 @@ class BaseTest(CommandSet):
     def do_resume(self, ns: argparse.Namespace):
         """ resume a session """
         pass
+

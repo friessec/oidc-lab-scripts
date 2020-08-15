@@ -23,6 +23,8 @@ class Cli(cmd2.Cmd):
 
         super().__init__(use_ipython=True,
                          multiline_commands=['orate'],
+                         persistent_history_file='history.dat',
+                         persistent_history_length=1000,
                          shortcuts=shortcuts)
 
         self.intro = style('Starting Control Center for Professos!', fg=fg.green, bold=True)
