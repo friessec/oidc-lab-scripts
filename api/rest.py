@@ -21,7 +21,6 @@ class Rest(Commands):
         self.staticCfg = None
         self.initialized = False
 
-
     def create(self):
         url = self.profapi + '/' + self.target_type + '/create-test-object'
         response = ""
@@ -113,8 +112,6 @@ class Rest(Commands):
         if result["TestStepResult"]["Result"] != "PASS":
             print("Learn failed: {}".format(json.dumps(response.json(), indent=4)))
             raise requests.RequestException("Test Failed")
-
-
 
     def runAllTests(self):
         skip_tests = None
@@ -229,5 +226,3 @@ class Rest(Commands):
         except requests.RequestException as e:
             print("Received error from Professos")
             print(str(e))
-
-
