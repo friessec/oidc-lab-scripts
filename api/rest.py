@@ -21,6 +21,7 @@ class Rest(Commands):
         self.testObj = None
         self.staticCfg = None
         self.initialized = False
+        self.session_dir = "results/" + self.target_type + "/" + self.target_name
 
     def show_config(self):
         self.Commands.poutput('Config')
@@ -191,11 +192,11 @@ class Rest(Commands):
         if response.status_code != 200:
             raise requests.RequestException('GET {} Error {}'.format(url, response.status_code))
 
-        directory = "results/" + self.target_type + "/" + self.target_name
-        if not os.path.exists(directory):
-            os.makedirs(directory)
+        if not os.path.exists(self.session_dir):
+            os.makedirs(self.session_dir)
 
-        with open(directory + "/result-" + datetime.now().isoformat(timespec='minutes') + ".json", "w") as file:
+        # TODO create session dir with timestamp datetime.now().isoformat(timespec='minutes')
+        with open(self.session_dir + "/result.json", "w") as file:
             json.dump(response.json(), file)
 
     def run(self, export_results=False, run_test=None):

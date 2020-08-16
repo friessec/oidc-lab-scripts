@@ -2,6 +2,8 @@ import argparse
 import cmd2
 from cmd2 import CommandSet, with_argparser, with_category, with_default_category
 
+from api.report.generator import ReportGenerator
+
 
 @with_default_category('Session')
 class Commands(CommandSet):
@@ -35,3 +37,9 @@ class Commands(CommandSet):
             self.show_config()
         elif ns.action == 'get':
             pass
+
+    def do_report(self, args):
+        """ generates a human readable report"""
+        report = ReportGenerator(self.session_dir, self.session_dir + '/report')
+        report.load_export("result.json")
+        report.generate(self.target_name)

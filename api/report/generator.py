@@ -7,10 +7,10 @@ from jinja2 import Template
 
 class ReportGenerator(object):
 
-    def __init__(self):
-        self.output_dir = "output"
-        self.template_dir = "template"
-        self.report_dir = "testdata"
+    def __init__(self, report_dir, output_dir):
+        self.output_dir = output_dir
+        self.template_dir = "api/report/template"
+        self.report_dir = report_dir
         self.data = None
 
     def load_export(self, reportName):
@@ -20,7 +20,7 @@ class ReportGenerator(object):
         with open(export) as file:
             self.data = json.load(file)
 
-    def generate(self):
+    def generate(self, name):
         if not os.path.exists(self.output_dir):
             os.makedirs(self.output_dir)
 
@@ -30,11 +30,4 @@ class ReportGenerator(object):
 
         with open('{}/index.html'.format(self.template_dir)) as file:
             template = Template(file.read())
-            template.stream(title="Gravitee", results=self.data).dump("{}/index.html".format(self.output_dir))
-
-
-if __name__ == "__main__":
-
-    report = ReportGenerator()
-    report.load_export("result.json")
-    report.generate()
+            template.stream(title=name, results=self.data).dump("{}/index.html".format(self.output_dir))
