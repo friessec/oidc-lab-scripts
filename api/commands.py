@@ -28,15 +28,27 @@ class Commands(CommandSet):
         pass
 
     config_parser = cmd2.Cmd2ArgumentParser('session')
-    config_parser.add_argument('action', choices=['set', 'get', 'list'], help='')
+    config_parser.add_argument('--show', action='store_true', help='')
+    config_parser.add_argument('--get', action='store_true', help='')
+    config_parser.add_argument('--set', action='store_true', help='')
+    config_parser.add_argument('variable', nargs='?', help='')
 
     @with_argparser(config_parser)
     def do_config(self, ns: argparse.Namespace):
-        self.cli.poutput('Config')
-        if ns.action == 'list':
+        if ns.show:
+            self.cli.poutput('Show {}'.format(ns.show))
             self.show_config()
-        elif ns.action == 'get':
-            pass
+        elif ns.get:
+            self.cli.poutput('Get {}'.format(ns.get))
+        elif ns.set:
+            self.cli.poutput('Set {}'.format(ns.set))
+            try:
+                (k, v) = ns.variable.split("=", 2)
+                print('{} = {}'.format(k,v))
+            except ValueError as ex:
+                self.cli.poutput('Set must be set as Key=Value')
+        else:
+            self.cli.perror("")
 
     def do_report(self, args):
         """ generates a human readable report"""

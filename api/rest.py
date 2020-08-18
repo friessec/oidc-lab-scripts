@@ -24,7 +24,7 @@ class Rest(Commands):
         self.session_dir = "results/" + self.target_type + "/" + self.target_name
 
     def show_config(self):
-        self.Commands.poutput('Config')
+        self.cli.poutput('Config')
 
     def create(self):
         url = self.profapi + '/' + self.target_type + '/create-test-object'
