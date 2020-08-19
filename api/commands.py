@@ -55,3 +55,10 @@ class Commands(CommandSet):
         report = ReportGenerator(self.session_dir, self.session_dir + '/report')
         report.load_export("result.json")
         report.generate(self.target_name)
+
+    prepare_parser = cmd2.Cmd2ArgumentParser('session')
+    prepare_parser.add_argument('test_nr', nargs='?', help='')
+
+    @with_argparser(prepare_parser)
+    def do_prepare(self, ns: argparse.Namespace):
+        pass
