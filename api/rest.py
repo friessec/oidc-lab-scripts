@@ -66,7 +66,7 @@ class Rest(Commands):
         url = self.profapi + '/' + self.target_type + '/' + self.testId + '/config'
         header = {"Content-Type": "application/json"}
         jsonFile = open("config/" + self.target_type + "/" + self.target_name + "/professos.json", "r+")
-        jsoncfg=json.load(jsonFile)
+        jsoncfg = json.load(jsonFile)
 
         payload = self.testObj["TestConfig"]
         payload.update(jsoncfg)
@@ -89,7 +89,7 @@ class Rest(Commands):
         testStep = self.testObj["TestReport"]["TestStepResult"][id]
 
         test = testStep['StepReference']['Name']
-        #print("Expose discovery for Test: {}".format(test))
+        # print("Expose discovery for Test: {}".format(test))
         url = self.profapi + '/' + self.target_type + '/' + self.testId + '/expose/' + test
 
         response = requests.post(url)
@@ -128,15 +128,17 @@ class Rest(Commands):
                 if i not in skip_tests:
                     self.runTest(i)
                 else:
-                    print('='*80)
-                    print("Skip Test [{}]: {}".format(i, self.testObj["TestReport"]["TestStepResult"][i]['StepReference']['Name']))
+                    print('=' * 80)
+                    print("Skip Test [{}]: {}".format(i,
+                                                      self.testObj["TestReport"]["TestStepResult"][i]['StepReference'][
+                                                          'Name']))
             else:
                 self.runTest(i)
 
     def runTest(self, id):
         if self.staticCfg and self.staticCfg.get("preExpose"):
             self.expose_discovery(id)
-        print('='*80)
+        print('=' * 80)
         testStep = self.testObj["TestReport"]["TestStepResult"][id]
 
         test = testStep['StepReference']['Name']
@@ -153,8 +155,8 @@ class Rest(Commands):
         result = response.json()
         result_status = result['Result']
         print(" - {}".format(result_status))
-        #print("{}".format(json.dumps(result, indent=4)))
-        #print("{}".format(json.dumps(result['LogEntry'], indent=4)))
+        # print("{}".format(json.dumps(result, indent=4)))
+        # print("{}".format(json.dumps(result['LogEntry'], indent=4)))
         directory = "results/" + self.target_type + "/" + self.target_name + "/test" + str(id)
         if not os.path.exists(directory):
             os.makedirs(directory)
@@ -207,7 +209,7 @@ class Rest(Commands):
                 if self.target_type == "rp":
                     self.expose_discovery(0)
             else:
-                #self.set_config()
+                # self.set_config()
                 self.learn()
             if run_test:
                 for i in run_test:
