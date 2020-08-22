@@ -96,10 +96,19 @@ class Commands(CommandSet):
         except requests.RequestException as e:
             self.cli.poutput("Received error from Professos?")
 
-    prepare_parser = cmd2.Cmd2ArgumentParser(CATEGORY_COMMANDS)
-    prepare_parser.add_argument('--test', type=int, help='')
+    expose_parser = cmd2.Cmd2ArgumentParser(CATEGORY_COMMANDS)
+    expose_parser.add_argument('--test', type=int, help='')
 
     @with_category(CATEGORY_COMMANDS)
-    @with_argparser(prepare_parser)
-    def do_prepare(self, ns: argparse.Namespace):
-        pass
+    @with_argparser(expose_parser)
+    def do_expose(self, ns: argparse.Namespace):
+        try:
+            if not self.config.discovery:
+                self.set_config()
+            if ns.test:
+                self.expose_discovery(ns.test)
+            else:
+                self.expose_discovery(0)
+        except requests.RequestException as e:
+            print("Received error from Professos")
+            print(str(e))

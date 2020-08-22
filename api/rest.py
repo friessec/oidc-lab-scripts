@@ -76,7 +76,7 @@ class Rest(Commands):
         self.testId = response_json["TestId"]
         self.testObj = response_json
 
-        print("Create new test plan: TestId = {}".format(self.testId))
+        self.cli.poutput("Create new test plan: TestId = {}".format(self.testId))
 
     def clean(self):
         if len(self.testId) == 0 or not self.initialized:
@@ -87,7 +87,7 @@ class Rest(Commands):
         response = requests.post(url, data=payload, headers=header)
         if response.status_code != 200 and response.status_code != 204:
             raise requests.RequestException('POST {} Error {}'.format(url, response.status_code))
-        print("Delete test plan ID: {}".format(self.testId))
+        self.cli.poutput("Delete test plan ID: {}".format(self.testId))
 
     def set_config(self):
         url = self.profapi + '/' + self.target_type + '/' + self.testId + '/config'
@@ -101,7 +101,7 @@ class Rest(Commands):
         response = requests.post(url, json=payload, headers=header)
         if response.status_code != 200 and response.status_code != 204:
             raise requests.RequestException('POST {} Error {}'.format(url, response.status_code))
-        print("Updated config: {}".format(json.dumps(payload, indent=4)))
+        self.cli.poutput("Updated config: {}".format(json.dumps(payload, indent=4)))
 
     def get_config(self):
         url = self.profapi + '/' + self.target_type + '/' + self.testId + '/config'
@@ -110,13 +110,12 @@ class Rest(Commands):
         response = requests.get(url, headers=header)
         if response.status_code != 200:
             raise requests.RequestException('GET {} Error {}'.format(url, response.status_code))
-        print("{}".format(json.dumps(response.json(), indent=4)))
+        self.cli.poutput("{}".format(json.dumps(response.json(), indent=4)))
 
     def expose_discovery(self, id=0):
         testStep = self.testObj["TestReport"]["TestStepResult"][id]
 
         test = testStep['StepReference']['Name']
-        # print("Expose discovery for Test: {}".format(test))
         url = self.profapi + '/' + self.target_type + '/' + self.testId + '/expose/' + test
 
         response = requests.post(url)
@@ -133,7 +132,7 @@ class Rest(Commands):
         payload = self.testObj["TestConfig"]
         payload.update(jsoncfg)
 
-        print("Learn: {}".format(json.dumps(payload, indent=4)))
+        self.cli.poutput("Learn: {}".format(json.dumps(payload, indent=4)))
 
         response = requests.post(url, json=payload, headers=header)
         if response.status_code != 200:
@@ -142,7 +141,7 @@ class Rest(Commands):
 
         result = response.json()
         if result["TestStepResult"]["Result"] != "PASS":
-            print("Learn failed: {}".format(json.dumps(response.json(), indent=4)))
+            self.cli.poutput("Learn failed: {}".format(json.dumps(response.json(), indent=4)))
             raise requests.RequestException("Test Failed")
 
     def runAllTests(self):
@@ -155,8 +154,8 @@ class Rest(Commands):
                 if i not in skip_tests:
                     self.runTest(i)
                 else:
-                    print('=' * 80)
-                    print("Skip Test [{}]: {}".format(i,
+                    self.cli.poutput('=' * 80)
+                    self.cli.poutput("Skip Test [{}]: {}".format(i,
                                                       self.testObj["TestReport"]["TestStepResult"][i]['StepReference'][
                                                           'Name']))
             else:
@@ -249,13 +248,3 @@ class Rest(Commands):
             print(str(e))
         finally:
             self.clean()
-
-    def prepare(self):
-        try:
-            self.create()
-            if self.staticCfg and self.staticCfg["disable_dynamic"]:
-                self.set_config()
-            self.expose_discovery(0)
-        except requests.RequestException as e:
-            print("Received error from Professos")
-            print(str(e))
