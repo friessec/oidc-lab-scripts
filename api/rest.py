@@ -4,7 +4,6 @@ import time
 import os
 import base64
 
-from datetime import datetime
 from pathlib import Path
 from api.commands import Commands
 from api.settings.testconfig import TestConfig
@@ -218,7 +217,6 @@ class Rest(Commands):
         if not os.path.exists(self.session_dir):
             os.makedirs(self.session_dir)
 
-        # TODO create session dir with timestamp datetime.now().isoformat(timespec='minutes')
         with open(self.session_dir + "/result.json", "w") as file:
             json.dump(response.json(), file)
 

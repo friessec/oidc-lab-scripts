@@ -2,6 +2,7 @@ import os
 import argparse
 import cmd2
 from cmd2 import CommandSet, with_argparser, with_category, with_default_category
+from datetime import datetime
 
 from api.report.generator import ReportGenerator
 
@@ -35,7 +36,8 @@ class Commands(CommandSet):
         elif ns.name:
             self.cli.poutput(ns.name)
         elif ns.timestamp:
-            self.cli.poutput("1234")
+            time = datetime.now().isoformat(timespec='minutes')
+            self.cli.poutput(time)
 
     session_resume_parser = cmd2.Cmd2ArgumentParser(CATEGORY_SESSION)
     session_resume_parser.add_argument('name', type=str)
