@@ -50,7 +50,10 @@ class Commands(CommandSet):
     @with_argparser(session_resume_parser)
     def do_resume(self, ns: argparse.Namespace):
         """ resume a session """
-        pass
+        if not os.path.exists(self.result_dir + '/' + ns.name):
+            self.cli.poutput(cmd2.style('No session found with name {}'.format(ns.name), fg=cmd2.fg.red))
+        else:
+            self.session_name = ns.name
 
     config_parser = cmd2.Cmd2ArgumentParser(CATEGORY_SESSION)
     config_parser.add_argument('--show', action='store_true', help='')
