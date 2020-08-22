@@ -1,0 +1,6 @@
+{
+  "test_id": "angular-auth-oidc",
+  "skip_tests": "",
+  "dynamic": true,
+  "discovery": false
+}

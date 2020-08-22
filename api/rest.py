@@ -46,6 +46,10 @@ class Rest(Commands):
         self.cli.poutput('Dynamic Client Registration is {} [{}]'.format('enabled' if self.config.dynamic else 'disabled', 'config dynamic'))
         self.cli.poutput('Professos {} expose API before test [{}]'.format('does' if self.config.pre_expose else 'does not', 'config pre_expose'))
         self.cli.poutput('')
+
+        if len(self.testId):
+            self.cli.poutput('Professos Test ID is {}'.format(self.testId))
+
         if len(self.config.test_id):
             self.cli.poutput('Test ID is {} [{}]'.format(self.config.test_id, 'config test_id'))
         else:
@@ -59,17 +63,10 @@ class Rest(Commands):
     def create(self):
         url = self.profapi + '/' + self.target_type + '/create-test-object'
         response = ""
-        testID = None
 
-        staticConfig = "config/" + self.target_type + "/" + self.target_name + "/statictest.json"
-        if os.path.exists(staticConfig):
-            staticFile = open("config/" + self.target_type + "/" + self.target_name + "/statictest.json", "r+")
-            self.staticCfg = json.load(staticFile)
-            testID = self.staticCfg['testId']
-
-        if testID:
+        if len(self.config.test_id):
             header = {"Content-type": "application/x-www-form-urlencoded"}
-            payload = "test_id=" + testID
+            payload = "test_id=" + self.config.test_id
             response = requests.post(url, data=payload, headers=header)
         else:
             response = requests.post(url)

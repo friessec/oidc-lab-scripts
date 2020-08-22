@@ -1,6 +1,8 @@
 import os
 import argparse
 import cmd2
+import requests
+import sys
 from cmd2 import CommandSet, with_argparser, with_category, with_default_category
 from datetime import datetime
 
@@ -63,7 +65,9 @@ class Commands(CommandSet):
 
     @with_argparser(config_parser)
     def do_config(self, ns: argparse.Namespace):
-        if ns.show:
+        if not ns.show and not ns.get and not ns.set:
+            self.show_config()
+        elif ns.show:
             self.show_config()
         elif ns.get:
             self.cli.poutput('Get {}'.format(ns.get))
@@ -84,8 +88,16 @@ class Commands(CommandSet):
         report.load_export("result.json")
         report.generate(self.target_name)
 
+    @with_category(CATEGORY_COMMANDS)
+    def do_create(self, args):
+        """ create a new professos test id """
+        try:
+            self.create()
+        except requests.RequestException as e:
+            self.cli.poutput("Received error from Professos?")
+
     prepare_parser = cmd2.Cmd2ArgumentParser(CATEGORY_COMMANDS)
-    prepare_parser.add_argument('test_nr', nargs='?', help='')
+    prepare_parser.add_argument('--test', type=int, help='')
 
     @with_category(CATEGORY_COMMANDS)
     @with_argparser(prepare_parser)
