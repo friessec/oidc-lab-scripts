@@ -22,7 +22,10 @@ class Commands(CommandSet):
         if not os.path.exists(self.result_dir):
             return
         for session in os.listdir(self.result_dir):
-            self.cli.poutput(cmd2.style(session, fg=cmd2.fg.green))
+            if session == self.session_name:
+                self.cli.poutput(cmd2.style('* ' + session, fg=cmd2.fg.green, bold=True))
+            else:
+                self.cli.poutput(cmd2.style(session, fg=cmd2.fg.green))
 
     session_start_parser = cmd2.Cmd2ArgumentParser(CATEGORY_SESSION)
     session_start_parser.add_argument('--timestamp', action='store_true', help='')
