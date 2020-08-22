@@ -32,12 +32,12 @@ class Commands(CommandSet):
     def do_start(self, ns: argparse.Namespace):
         """ start a new session """
         if not ns.name and not ns.timestamp:
-            self.cli.poutput("Default")
+            self.session_name = 'default'
         elif ns.name:
-            self.cli.poutput(ns.name)
+            self.session_name = ns.name
         elif ns.timestamp:
-            time = datetime.now().isoformat(timespec='minutes')
-            self.cli.poutput(time)
+            self.session_name = datetime.now().isoformat(timespec='minutes')
+        self.cli.poutput("Start session {}".format(self.session_name))
 
     session_resume_parser = cmd2.Cmd2ArgumentParser(CATEGORY_SESSION)
     session_resume_parser.add_argument('name', type=str)
