@@ -11,26 +11,56 @@ class TestConfig(object):
         self.test_id = ""
         self.skip_tests = ""
 
-
-    def loadJson(self, file):
+    def load_json(self, file):
         if not os.path.exists(file):
             return None
         with open(file, 'r') as jsonData:
             data = json.load(jsonData)
             self.test_id = data.get('test_id', "")
-            skipTests = data.get('skip_tests', "")
-            if skipTests != "":
-                self.skip_tests = [int(x) for x in skipTests.split(",")]
+            self.skip_tests = data.get('skip_tests', "")
             self.discovery = data.get('discovery', True)
             self.dynamic = data.get('dynamic', True)
-            self.pre_expose = data.get('pre_expose', True)
+            self.pre_expose = data.get('pre_expose', False)
 
+    @property
+    def discovery(self):
+        return self.__discovery
 
-if __name__ == "__main__":
-    cfg = TestConfig()
-    cfg.loadJson("../../config/rp/angular-auth-oidc/config.json")
+    @discovery.setter
+    def discovery(self, value):
+        self.__discovery = value
 
-    print(cfg.discovery)
-    print(cfg.test_id)
-    print(cfg.skip_tests)
-    print(cfg.dynamic)
+    @property
+    def dynamic(self):
+        return self.__dynamic
+
+    @dynamic.setter
+    def dynamic(self, value):
+        self.__dynamic = value
+
+    @property
+    def pre_expose(self):
+        return self.__pre_expose
+
+    @pre_expose.setter
+    def pre_expose(self, value):
+        self.__pre_expose = value
+
+    @property
+    def test_id(self):
+        return self.__test_id
+
+    @test_id.setter
+    def test_id(self, value):
+        self.__test_id = value
+
+    @property
+    def skip_tests(self):
+        return self.__skip_tests
+
+    @skip_tests.setter
+    def skip_tests(self, value):
+        if value != "":
+            self.__value = [int(x) for x in value.split(",")]
+        else:
+            self.__skip_tests = value
