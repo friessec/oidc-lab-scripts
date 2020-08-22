@@ -7,6 +7,8 @@ from api.report.generator import ReportGenerator
 
 @with_default_category('Session')
 class Commands(CommandSet):
+    CATEGORY_SESSION = 'Session'
+    CATEGORY_COMMANDS = 'Session Commands'
 
     def __init__(self):
         super().__init__()
@@ -17,9 +19,9 @@ class Commands(CommandSet):
 
     def do_start(self, ns: argparse.Namespace):
         """ start a new session """
-        self.prepare()
+        pass
 
-    session_parser = cmd2.Cmd2ArgumentParser('session')
+    session_parser = cmd2.Cmd2ArgumentParser(CATEGORY_SESSION)
     session_parser.add_argument('name', type=str)
 
     @with_argparser(session_parser)
@@ -27,7 +29,7 @@ class Commands(CommandSet):
         """ resume a session """
         pass
 
-    config_parser = cmd2.Cmd2ArgumentParser('session')
+    config_parser = cmd2.Cmd2ArgumentParser(CATEGORY_SESSION)
     config_parser.add_argument('--show', action='store_true', help='')
     config_parser.add_argument('--get', action='store_true', help='')
     config_parser.add_argument('--set', action='store_true', help='')
@@ -49,15 +51,17 @@ class Commands(CommandSet):
         else:
             self.cli.perror("")
 
+    @with_category(CATEGORY_COMMANDS)
     def do_report(self, args):
         """ generates a human readable report"""
         report = ReportGenerator(self.session_dir, self.session_dir + '/report')
         report.load_export("result.json")
         report.generate(self.target_name)
 
-    prepare_parser = cmd2.Cmd2ArgumentParser('session')
+    prepare_parser = cmd2.Cmd2ArgumentParser(CATEGORY_COMMANDS)
     prepare_parser.add_argument('test_nr', nargs='?', help='')
 
+    @with_category(CATEGORY_COMMANDS)
     @with_argparser(prepare_parser)
     def do_prepare(self, ns: argparse.Namespace):
         pass
