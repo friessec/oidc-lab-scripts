@@ -78,7 +78,7 @@ class Rest(Commands):
 
         self.cli.poutput("Create new test plan: TestId = {}".format(self.testId))
 
-    def clean(self):
+    def delete(self):
         if len(self.testId) == 0 or not self.initialized:
             return
         url = self.profapi + '/delete-test-object'

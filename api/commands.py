@@ -96,6 +96,18 @@ class Commands(CommandSet):
         except requests.RequestException as e:
             self.cli.poutput("Received error from Professos?")
 
+    @with_category(CATEGORY_COMMANDS)
+    def do_delete(self, args):
+        self.delete()
+
+    @with_category(CATEGORY_COMMANDS)
+    def do_set_config(self, args):
+        self.set_config()
+
+    @with_category(CATEGORY_COMMANDS)
+    def do_get_config(self, args):
+        self.get_config()
+
     expose_parser = cmd2.Cmd2ArgumentParser(CATEGORY_COMMANDS)
     expose_parser.add_argument('--test', type=int, help='')
 
@@ -112,3 +124,8 @@ class Commands(CommandSet):
         except requests.RequestException as e:
             print("Received error from Professos")
             print(str(e))
+
+    @with_category(CATEGORY_COMMANDS)
+    def do_learn(self, args):
+        self.learn()
+
