@@ -129,6 +129,10 @@ class Commands(CommandSet):
     def do_learn(self, args):
         self.learn()
 
+    @with_category(CATEGORY_COMMANDS)
+    def do_export(self, args):
+        self.export()
+
     run_parser = cmd2.Cmd2ArgumentParser(CATEGORY_COMMANDS)
     run_parser.add_argument('--all', action='store_true', help='')
     run_parser.add_argument('test_nr', nargs='?', help='')
