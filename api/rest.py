@@ -24,7 +24,9 @@ class Rest(Commands):
         self.staticCfg = None
         self.initialized = False
         self.config_dir = "config/" + self.target_type + "/" + self.target_name
-        self.session_dir = "results/" + self.target_type + "/" + self.target_name
+        self.result_dir = "results/" + self.target_type + "/" + self.target_name
+        self.session_name = 'default'
+        self.session_dir = self.result_dir + '/' + self.session_name
         self.config.load_json(self.config_dir + "/config.json")
 
     def show_config(self):

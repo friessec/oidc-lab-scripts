@@ -1,3 +1,4 @@
+import os
 import argparse
 import cmd2
 from cmd2 import CommandSet, with_argparser, with_category, with_default_category
@@ -15,7 +16,12 @@ class Commands(CommandSet):
 
     def do_listsessions(self, ns: argparse.Namespace):
         """ show all sessions """
-        pass
+        self.cli.poutput("\nAvailable sessions:")
+        self.cli.poutput("==========================\n")
+        if not os.path.exists(self.result_dir):
+            return
+        for session in os.listdir(self.result_dir):
+            self.cli.poutput(cmd2.style(session, fg=cmd2.fg.green))
 
     def do_start(self, ns: argparse.Namespace):
         """ start a new session """
