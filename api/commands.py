@@ -129,3 +129,14 @@ class Commands(CommandSet):
     def do_learn(self, args):
         self.learn()
 
+    run_parser = cmd2.Cmd2ArgumentParser(CATEGORY_COMMANDS)
+    run_parser.add_argument('--all', action='store_true', help='')
+    run_parser.add_argument('test_nr', nargs='?', help='')
+
+    @with_category(CATEGORY_COMMANDS)
+    @with_argparser(run_parser)
+    def do_run(self, ns: argparse.Namespace):
+        if ns.all:
+            self.runAllTests()
+        else:
+            self.runTest(int(ns.test_nr))

@@ -225,26 +225,3 @@ class Rest(Commands):
 
         with open(self.session_dir + "/result.json", "w") as file:
             json.dump(response.json(), file)
-
-    def run(self, export_results=False, run_test=None):
-        try:
-            self.create()
-            if self.staticCfg and self.staticCfg["disable_dynamic"]:
-                self.set_config()
-                if self.target_type == "rp":
-                    self.expose_discovery(0)
-            else:
-                # self.set_config()
-                self.learn()
-            if run_test:
-                for i in run_test:
-                    self.runTest(int(i))
-            else:
-                self.runAllTests()
-            if export_results:
-                self.do_export()
-        except requests.RequestException as e:
-            print("Received error from Professos")
-            print(str(e))
-        finally:
-            self.clean()
