@@ -20,7 +20,6 @@ class Rest(Commands):
         self.config = TestConfig()
         self.testId = ""
         self.testObj = None
-        self.staticCfg = None
         self.initialized = False
         self.config_dir = "config/" + self.target_type + "/" + self.target_name
         self.result_dir = "results/" + self.target_type + "/" + self.target_name
@@ -62,7 +61,6 @@ class Rest(Commands):
 
     def create(self):
         url = self.profapi + '/' + self.target_type + '/create-test-object'
-        response = ""
 
         if len(self.config.test_id):
             header = {"Content-type": "application/x-www-form-urlencoded"}
@@ -92,7 +90,7 @@ class Rest(Commands):
     def set_config(self):
         url = self.profapi + '/' + self.target_type + '/' + self.testId + '/config'
         header = {"Content-Type": "application/json"}
-        jsonFile = open("config/" + self.target_type + "/" + self.target_name + "/professos.json", "r+")
+        jsonFile = open(self.config_dir + "/professos.json", "r+")
         jsoncfg = json.load(jsonFile)
 
         payload = self.testObj["TestConfig"]
@@ -126,7 +124,7 @@ class Rest(Commands):
         url = self.profapi + '/' + self.target_type + '/' + self.testId + '/learn'
         header = {"Content-type": "application/json"}
 
-        jsonFile = open("config/" + self.target_type + "/" + self.target_name + "/professos.json", "r+")
+        jsonFile = open(self.config_dir + "/professos.json", "r+")
         jsoncfg = json.load(jsonFile)
 
         payload = self.testObj["TestConfig"]
@@ -145,13 +143,9 @@ class Rest(Commands):
             raise requests.RequestException("Test Failed")
 
     def runAllTests(self):
-        skip_tests = None
-        if self.staticCfg and self.staticCfg['skipTests'] != "":
-            skip_tests = [int(x) for x in self.staticCfg['skipTests'].split(",")]
-
         for i, item in enumerate(self.testObj["TestReport"]["TestStepResult"]):
-            if skip_tests:
-                if i not in skip_tests:
+            if self.config.skip_tests:
+                if i not in self.config.skip_tests:
                     self.runTest(i)
                 else:
                     self.cli.poutput('=' * 80)
@@ -162,7 +156,7 @@ class Rest(Commands):
                 self.runTest(i)
 
     def runTest(self, id):
-        if self.staticCfg and self.staticCfg.get("preExpose"):
+        if self.config.pre_expose:
             self.expose_discovery(id)
         print('=' * 80)
         testStep = self.testObj["TestReport"]["TestStepResult"][id]
@@ -181,9 +175,8 @@ class Rest(Commands):
         result = response.json()
         result_status = result['Result']
         print(" - {}".format(result_status))
-        # print("{}".format(json.dumps(result, indent=4)))
         # print("{}".format(json.dumps(result['LogEntry'], indent=4)))
-        directory = "results/" + self.target_type + "/" + self.target_name + "/test" + str(id)
+        directory = self.session_dir + "/test" + str(id)
         if not os.path.exists(directory):
             os.makedirs(directory)
         for path in Path(directory).glob("*"):
