@@ -23,14 +23,24 @@ class Commands(CommandSet):
         for session in os.listdir(self.result_dir):
             self.cli.poutput(cmd2.style(session, fg=cmd2.fg.green))
 
+    session_start_parser = cmd2.Cmd2ArgumentParser(CATEGORY_SESSION)
+    session_start_parser.add_argument('--timestamp', action='store_true', help='')
+    session_start_parser.add_argument('--name', type=str)
+
+    @with_argparser(session_start_parser)
     def do_start(self, ns: argparse.Namespace):
         """ start a new session """
-        pass
+        if not ns.name and not ns.timestamp:
+            self.cli.poutput("Default")
+        elif ns.name:
+            self.cli.poutput(ns.name)
+        elif ns.timestamp:
+            self.cli.poutput("1234")
 
-    session_parser = cmd2.Cmd2ArgumentParser(CATEGORY_SESSION)
-    session_parser.add_argument('name', type=str)
+    session_resume_parser = cmd2.Cmd2ArgumentParser(CATEGORY_SESSION)
+    session_resume_parser.add_argument('name', type=str)
 
-    @with_argparser(session_parser)
+    @with_argparser(session_resume_parser)
     def do_resume(self, ns: argparse.Namespace):
         """ resume a session """
         pass
