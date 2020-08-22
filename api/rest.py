@@ -127,6 +127,10 @@ class Rest(Commands):
         jsonFile = open(self.config_dir + "/professos.json", "r+")
         jsoncfg = json.load(jsonFile)
 
+        if not len(self.config.test_id):
+            jsoncfg['HonestUserNeedle'] = jsoncfg['HonestUserNeedle'].replace('CHANGE_TEST_ID', self.testId)
+            jsoncfg['EvilUserNeedle'] = jsoncfg['EvilUserNeedle'].replace('CHANGE_TEST_ID', self.testId)
+
         payload = self.testObj["TestConfig"]
         payload.update(jsoncfg)
 

@@ -1,3 +1,5 @@
 {
   "test_id": "pyoidc-rp",
+  "skip_tests": "45",
+  "discovery": false
 }
