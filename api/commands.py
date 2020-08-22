@@ -36,7 +36,6 @@ class Commands(CommandSet):
     @with_argparser(config_parser)
     def do_config(self, ns: argparse.Namespace):
         if ns.show:
-            self.cli.poutput('Show {}'.format(ns.show))
             self.show_config()
         elif ns.get:
             self.cli.poutput('Get {}'.format(ns.get))

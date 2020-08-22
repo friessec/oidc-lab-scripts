@@ -29,6 +29,21 @@ class Rest(Commands):
 
     def show_config(self):
         self.cli.poutput('Config')
+        self.cli.poutput('-'*20)
+        self.cli.poutput('')
+        self.cli.poutput('Discovery is {} [{}]'.format('enabled' if self.config.discovery else 'disabled', 'config discovery'))
+        self.cli.poutput('Dynamic Client Registration is {} [{}]'.format('enabled' if self.config.dynamic else 'disabled', 'config dynamic'))
+        self.cli.poutput('Professos {} expose API before test [{}]'.format('does' if self.config.pre_expose else 'does not', 'config pre_expose'))
+        self.cli.poutput('')
+        if len(self.config.test_id):
+            self.cli.poutput('Test ID is {} [{}]'.format(self.config.test_id, 'config test_id'))
+        else:
+            self.cli.poutput('Test ID is currently not set [{}]'.format('config test_id'))
+        if len(self.config.skip_tests):
+            self.cli.poutput('Following tests will be skipped: {} [{}]'.format(self.config.skip_tests, 'config skip_tests'))
+        else:
+            self.cli.poutput('No tests will be skipped [{}]'.format('config skip_tests'))
+        self.cli.poutput('')
 
     def create(self):
         url = self.profapi + '/' + self.target_type + '/create-test-object'
