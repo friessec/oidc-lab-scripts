@@ -24,9 +24,18 @@ class Rest(Commands):
         self.initialized = False
         self.config_dir = "config/" + self.target_type + "/" + self.target_name
         self.result_dir = "results/" + self.target_type + "/" + self.target_name
+        self.session_dir = ""
         self.session_name = 'default'
-        self.session_dir = self.result_dir + '/' + self.session_name
         self.config.load_json(self.config_dir + "/config.json")
+
+    @property
+    def session_name(self):
+        return self.__session_name
+
+    @session_name.setter
+    def session_name(self, value):
+        self.__session_name = value
+        self.session_dir = self.result_dir + '/' + self.__session_name
 
     def show_config(self):
         self.cli.poutput('-'*20)

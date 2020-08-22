@@ -38,6 +38,8 @@ class Commands(CommandSet):
         elif ns.timestamp:
             self.session_name = datetime.now().isoformat(timespec='minutes')
         self.cli.poutput("Start session {}".format(self.session_name))
+        if not os.path.exists(self.session_dir):
+            os.makedirs(self.session_dir)
 
     session_resume_parser = cmd2.Cmd2ArgumentParser(CATEGORY_SESSION)
     session_resume_parser.add_argument('name', type=str)
