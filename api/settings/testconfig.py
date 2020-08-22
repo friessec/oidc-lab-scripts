@@ -9,6 +9,7 @@ class TestConfig(object):
         self.dynamic = True
         self.pre_expose = False
         self.test_id = ""
+        self.static_id = False  # marker if test_id was set in a config file and may not be overridden
         self.skip_tests = ""
 
     def load_json(self, file):
@@ -17,6 +18,8 @@ class TestConfig(object):
         with open(file, 'r') as jsonData:
             data = json.load(jsonData)
             self.test_id = data.get('test_id', "")
+            # if test_id was set, deactivate possibility to assign a new value
+            self.static_id = True if data.get('test_id') != "" else False
             self.skip_tests = data.get('skip_tests', "")
             self.discovery = data.get('discovery', True)
             self.dynamic = data.get('dynamic', True)
@@ -52,7 +55,17 @@ class TestConfig(object):
 
     @test_id.setter
     def test_id(self, value):
+        if self.static_id:
+            return
         self.__test_id = value
+
+    @property
+    def static_id(self):
+        return self.__static_id
+
+    @static_id.setter
+    def static_id(self, value):
+        self.__static_id = value
 
     @property
     def skip_tests(self):
