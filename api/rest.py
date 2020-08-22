@@ -29,7 +29,8 @@ class Rest(Commands):
         self.config.load_json(self.config_dir + "/config.json")
 
     def show_config(self):
-        self.cli.poutput('Config')
+        self.cli.poutput('-'*20)
+        self.cli.poutput('Session: {}'.format(self.session_name))
         self.cli.poutput('-'*20)
         self.cli.poutput('')
         self.cli.poutput('Discovery is {} [{}]'.format('enabled' if self.config.discovery else 'disabled', 'config discovery'))

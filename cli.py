@@ -72,6 +72,7 @@ class Cli(cmd2.Cmd):
             self.register_command_set(self._testModule)
             self.poutput('')
             self.prompt = 'cli>> {}> {}> '.format(ns.target, ns.name)
+            self.do_start("")
         except ValueError:
             self.poutput('Module already loaded')
 
