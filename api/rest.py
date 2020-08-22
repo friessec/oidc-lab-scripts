@@ -7,6 +7,7 @@ import base64
 from datetime import datetime
 from pathlib import Path
 from api.commands import Commands
+from api.settings.testconfig import TestConfig
 
 
 class Rest(Commands):
@@ -17,11 +18,14 @@ class Rest(Commands):
         self.profapi = cli.professos_url
         self.target_type = target_type
         self.target_name = target_name
+        self.config = TestConfig()
         self.testId = ""
         self.testObj = None
         self.staticCfg = None
         self.initialized = False
+        self.config_dir = "config/" + self.target_type + "/" + self.target_name
         self.session_dir = "results/" + self.target_type + "/" + self.target_name
+        self.config.load_json(self.config_dir + "/config.json")
 
     def show_config(self):
         self.cli.poutput('Config')

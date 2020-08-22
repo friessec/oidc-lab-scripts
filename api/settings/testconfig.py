@@ -8,8 +8,8 @@ class TestConfig(object):
         self.discovery = True
         self.dynamic = True
         self.pre_expose = False
-        self.test_id = ""
         self.static_id = False  # marker if test_id was set in a config file and may not be overridden
+        self.test_id = ""
         self.skip_tests = ""
 
     def load_json(self, file):
