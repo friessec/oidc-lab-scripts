@@ -1,5 +1,4 @@
 {
   "test_id": "node-openid",
-  "skip_tests": "0",
   "discovery": false
 }
