@@ -159,7 +159,7 @@ class Rest(Commands):
             else:
                 self.runTest(i)
 
-    def runTest(self, id):
+    def runTest(self, id, exportTest=False):
         if self.config.pre_expose:
             self.expose_discovery(id)
         print('=' * 80)
@@ -179,7 +179,8 @@ class Rest(Commands):
         result = response.json()
         result_status = result['Result']
         print(" - {}".format(result_status))
-        # print("{}".format(json.dumps(result['LogEntry'], indent=4)))
+        if not exportTest:
+            return
         directory = self.session_dir + "/test" + str(id)
         if not os.path.exists(directory):
             os.makedirs(directory)
