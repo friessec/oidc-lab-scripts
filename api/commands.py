@@ -144,3 +144,11 @@ class Commands(CommandSet):
             self.runAllTests()
         else:
             self.runTest(int(ns.test_nr))
+
+    @with_category(CATEGORY_COMMANDS)
+    def do_full_test(self, args):
+        self.do_create("")
+        self.do_learn("")
+        self.do_run("--all")
+        self.do_export("")
+        self.do_report("")
