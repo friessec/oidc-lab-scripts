@@ -135,6 +135,7 @@ class Commands(CommandSet):
 
     run_parser = cmd2.Cmd2ArgumentParser(CATEGORY_COMMANDS)
     run_parser.add_argument('--all', action='store_true', help='')
+    run_parser.add_argument('--show', action='store_true', help='show test result in console')
     run_parser.add_argument('test_nr', nargs='?', help='')
 
     @with_category(CATEGORY_COMMANDS)
@@ -143,7 +144,7 @@ class Commands(CommandSet):
         if ns.all:
             self.runAllTests()
         else:
-            self.runTest(int(ns.test_nr))
+            self.runTest(int(ns.test_nr), exportTest=ns.show)
 
     @with_category(CATEGORY_COMMANDS)
     def do_full_test(self, args):
