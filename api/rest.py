@@ -162,6 +162,7 @@ class Rest(Commands):
     def runTest(self, id, exportTest=False):
         if self.config.pre_expose:
             self.expose_discovery(id)
+            time.sleep(1)   # give professos a little bit time to expose
         print('=' * 80)
         testStep = self.testObj["TestReport"]["TestStepResult"][id]
 
