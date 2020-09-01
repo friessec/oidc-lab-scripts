@@ -10,4 +10,6 @@ def client(ip, port, message):
 
 ip, port = "localhost", 8042
 
-client(ip, port, "Hello World 1")
+if __name__ == "__main__":
+    client(ip, port, "Hello World 1")
+

@@ -10,9 +10,11 @@ class ThreadedTCPRequestHandler(socketserver.BaseRequestHandler):
     def handle(self):
         data = str(self.request.recv(1024), 'ascii')
         cur_thread = threading.current_thread()
+
+        self.server.controller.requestInterceptor = data
+
         response = bytes("{}: {}".format(cur_thread.name, data), 'ascii')
         self.request.sendall(response)
-        print(self.server.controller.text)
 
 
 class ThreadedTCPServer(socketserver.ThreadingMixIn, socketserver.TCPServer):
@@ -25,7 +27,28 @@ class ThreadedTCPServer(socketserver.ThreadingMixIn, socketserver.TCPServer):
 
 class Controller(object):
     def __init__(self):
-        self.text = "Hello"
+        self.__requestInterceptor = []
+        self.__responseInterceptor = []
+
+    def clear(self):
+        self.__requestInterceptor.clear()
+        self.__responseInterceptor.clear()
+
+    @property
+    def requestInterceptor(self):
+        return self.__requestInterceptor
+
+    @requestInterceptor.setter
+    def requestInterceptor(self, value):
+        self.__requestInterceptor.append(value)
+
+    @property
+    def responseInterceptor(self):
+        return self.__responseInterceptor
+
+    @responseInterceptor.setter
+    def responseInterceptor(self, value):
+        self.__responseInterceptor.append(value)
 
 
 class ProfessosEnhancer(object):
@@ -49,13 +72,13 @@ class ProfessosEnhancer(object):
         server_thread.start()
         print("Enhancer listens on {}:{}".format(ip,port))
 
+    def request(self):
+        for i in self.controller.requestInterceptor:
+            print(i)
 
-#    def request(self, flow: http.HTTPFlow) -> None:
-#        #ctx.log.info("Request: {}".format(self.controller.text))
-
-
-#    def response(self, flow: http.HTTPFlow) -> None:
-#        pass
+    def response(self):
+        for i in self.controller.responseInterceptor:
+            print(i)
 
     def done(self):
         if self.server is not None:
@@ -69,6 +92,10 @@ if __name__ == "__main__":
     try:
         prof.running()
         while(prof.finished):
-            sleep(1)
+            sleep(3)
+            print("============ REQUESTS =============")
+            prof.request()
+            print("============ RESPONSE =============")
+            prof.response()
     finally:
         prof.done()
