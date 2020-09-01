@@ -2,6 +2,8 @@ import socket
 import threading
 import socketserver
 
+from time import sleep
+
 
 class ThreadedTCPRequestHandler(socketserver.BaseRequestHandler):
 
@@ -26,33 +28,47 @@ class Controller(object):
         self.text = "Hello"
 
 
-def client(ip, port, message):
-    with socket.socket(socket.AF_INET, socket.SOCK_STREAM) as sock:
-        sock.connect((ip, port))
-        sock.sendall(bytes(message, 'ascii'))
-        response = str(sock.recv(1024), 'ascii')
-        print("Received: {}".format(response))
+class ProfessosEnhancer(object):
+
+    def __init__(self) -> None:
+        print("Init Server")
+        self.controller = Controller()
+        self.server = None
+        self.finished = True
+
+    def running(self):
+        if self.server is not None:
+            print("Server is already running")
+            return
+        HOST, PORT = "0.0.0.0", 8042
+        self.server = ThreadedTCPServer((HOST, PORT), ThreadedTCPRequestHandler, self.controller)
+        ip, port = self.server.server_address
+
+        server_thread = threading.Thread(target=self.server.serve_forever)
+        server_thread.daemon = True
+        server_thread.start()
+        print("Enhancer listens on {}:{}".format(ip,port))
+
+
+#    def request(self, flow: http.HTTPFlow) -> None:
+#        #ctx.log.info("Request: {}".format(self.controller.text))
+
+
+#    def response(self, flow: http.HTTPFlow) -> None:
+#        pass
+
+    def done(self):
+        if self.server is not None:
+            self.server.shutdown()
+            self.server = None
+        print("Finish")
 
 
 if __name__ == "__main__":
-    # Port 0 means to select an arbitrary unused port
-    HOST, PORT = "0.0.0.0", 8042
-
-    controller = Controller()
-    server = ThreadedTCPServer((HOST, PORT), ThreadedTCPRequestHandler, controller)
-    with server:
-        ip, port = server.server_address
-
-        # Start a thread with the server -- that thread will then start one
-        # more thread for each request
-        server_thread = threading.Thread(target=server.serve_forever)
-        # Exit the server thread when the main thread terminates
-        server_thread.daemon = False
-        server_thread.start()
-        print("Server loop running in thread:", server_thread.name)
-
-        client(ip, port, "Hello World 1")
-        client(ip, port, "Hello World 2")
-        client(ip, port, "Hello World 3")
-
-        server.shutdown()
+    prof = ProfessosEnhancer()
+    try:
+        prof.running()
+        while(prof.finished):
+            sleep(1)
+    finally:
+        prof.done()
