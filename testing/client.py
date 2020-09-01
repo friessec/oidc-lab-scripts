@@ -1,3 +1,4 @@
+import base64
 import json
 import socket
 from time import sleep
@@ -12,14 +13,15 @@ def client(ip, port, message):
 
 ip, port = "localhost", 8042
 
+
 def command(cmd):
     data = json.dumps(cmd)
     client(ip, port, data)
 
 if __name__ == "__main__":
-    command({'type': 'request', 'search': 'honestOP', 'replace': 'attackOP'})
+    command({'type': 'request', 'search': base64.b64encode('honestOP'.encode('ascii')).decode('ascii'), 'replace':  base64.b64encode('attackOP'.encode('ascii')).decode('ascii')})
     sleep(2)
-    command({'type': 'response', 'search': 'honestRP', 'replace': 'attackRP'})
+    command({'type': 'response', 'search':  base64.b64encode('honestRP'.encode('ascii')).decode('ascii'), 'replace':  base64.b64encode('attackRP'.encode('ascii')).decode('ascii')})
     sleep(4)
     command({'type': 'clear'})
 

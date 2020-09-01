@@ -1,3 +1,4 @@
+import base64
 import json
 import threading
 import socketserver
@@ -7,8 +8,8 @@ from time import sleep
 
 class Intercept():
     def __init__(self, search, replace):
-        self.search = search
-        self.replace = replace
+        self.search = base64.b64decode(search).decode('ascii')
+        self.replace = base64.b64decode(replace).decode('ascii')
 
 
 class ThreadedTCPRequestHandler(socketserver.BaseRequestHandler):
