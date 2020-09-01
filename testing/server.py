@@ -1,25 +1,30 @@
 import json
-import socket
 import threading
 import socketserver
 
 from time import sleep
 
 
+class Intercept():
+    def __init__(self, search, replace):
+        self.search = search
+        self.replace = replace
+
+
 class ThreadedTCPRequestHandler(socketserver.BaseRequestHandler):
 
     def handle(self):
         data = str(self.request.recv(1024), 'ascii')
-        cur_thread = threading.current_thread()
-
         cmd = json.loads(data)
 
         if cmd.get("type") == 'clear':
             self.server.controller.clear()
         elif cmd.get("type") == 'request':
-            self.server.controller.requestInterceptor = cmd
+            intercept = Intercept(cmd.get('search'), cmd.get('replace'))
+            self.server.controller.requestInterceptor = intercept
         elif cmd.get("type") == 'response':
-            self.server.controller.responseInterceptor = cmd
+            intercept = Intercept(cmd.get('search'), cmd.get('replace'))
+            self.server.controller.responseInterceptor = intercept
 
         response = bytes("OK", 'ascii')
         self.request.sendall(response)
@@ -81,12 +86,12 @@ class ProfessosEnhancer(object):
         print("Enhancer listens on {}:{}".format(ip,port))
 
     def request(self):
-        for i in self.controller.requestInterceptor:
-            print(i)
+        for intercept in self.controller.requestInterceptor:
+            print(intercept.search, intercept.replace)
 
     def response(self):
-        for i in self.controller.responseInterceptor:
-            print(i)
+        for intercept in self.controller.responseInterceptor:
+            print(intercept.search, intercept.replace)
 
     def done(self):
         if self.server is not None:
