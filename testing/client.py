@@ -1,4 +1,6 @@
+import json
 import socket
+from time import sleep
 
 
 def client(ip, port, message):
@@ -10,6 +12,14 @@ def client(ip, port, message):
 
 ip, port = "localhost", 8042
 
+def command(cmd):
+    data = json.dumps(cmd)
+    client(ip, port, data)
+
 if __name__ == "__main__":
-    client(ip, port, "Hello World 1")
+    command({'type': 'request', 'search': 'honestOP', 'replace': 'attackOP'})
+    sleep(2)
+    command({'type': 'response', 'search': 'honestRP', 'replace': 'attackRP'})
+    sleep(4)
+    command({'type': 'clear'})
 

@@ -1,3 +1,4 @@
+import json
 import socket
 import threading
 import socketserver
@@ -11,9 +12,16 @@ class ThreadedTCPRequestHandler(socketserver.BaseRequestHandler):
         data = str(self.request.recv(1024), 'ascii')
         cur_thread = threading.current_thread()
 
-        self.server.controller.requestInterceptor = data
+        cmd = json.loads(data)
 
-        response = bytes("{}: {}".format(cur_thread.name, data), 'ascii')
+        if cmd.get("type") == 'clear':
+            self.server.controller.clear()
+        elif cmd.get("type") == 'request':
+            self.server.controller.requestInterceptor = cmd
+        elif cmd.get("type") == 'response':
+            self.server.controller.responseInterceptor = cmd
+
+        response = bytes("OK", 'ascii')
         self.request.sendall(response)
 
 
