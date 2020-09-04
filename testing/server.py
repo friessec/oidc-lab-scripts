@@ -3,6 +3,7 @@ import json
 import threading
 import socketserver
 
+from urllib.parse import urlparse, quote
 from time import sleep
 
 
@@ -12,16 +13,46 @@ class Intercept():
         self.replace = base64.b64decode(replace).decode('ascii')
 
 
+class InterceptReplaceCommand:
+    def __init__(self, uri, keyVal):
+        self.type = "request"
+        self.action = "querySearchReplace"
+        self.uri = uri
+        self.keyVal = keyVal
+
+    def replace(self, requestUri):
+        parse = urlparse(requestUri)
+
+        # Check if url same
+        if self.uri != parse.netloc+parse.path:
+            print('{}{}'.format(parse.netloc, parse.path))
+            return None
+
+        querys = parse.query.split("&")
+        new_query = []
+        for query in querys:
+            key, value = query.split('=')
+            print(self.keyVal)
+            if key in self.keyVal:
+                print(key)
+                value = self.keyVal.get(key)
+            query = key + '=' + quote(value)
+            new_query.append(query)
+
+        new_query = "&".join(new_query)
+        return parse._replace(query=new_query).geturl()
+
+
 class ThreadedTCPRequestHandler(socketserver.BaseRequestHandler):
 
     def handle(self):
         data = str(self.request.recv(1024), 'ascii')
         cmd = json.loads(data)
-
+        print(cmd)
         if cmd.get("type") == 'clear':
             self.server.controller.clear()
-        elif cmd.get("type") == 'request':
-            intercept = Intercept(cmd.get('search'), cmd.get('replace'))
+        elif cmd.get("type") == 'request' and cmd.get("action") == 'querySearchReplace':
+            intercept = InterceptReplaceCommand(cmd.get('uri'), cmd.get('keyVal'))
             self.server.controller.requestInterceptor = intercept
         elif cmd.get("type") == 'response':
             intercept = Intercept(cmd.get('search'), cmd.get('replace'))
@@ -88,7 +119,8 @@ class ProfessosEnhancer(object):
 
     def request(self):
         for intercept in self.controller.requestInterceptor:
-            print(intercept.search, intercept.replace)
+            if intercept.action == "querySearchReplace":
+                print(intercept.replace("test"))
 
     def response(self):
         for intercept in self.controller.responseInterceptor:
