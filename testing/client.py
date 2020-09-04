@@ -45,10 +45,11 @@ ip, port = "localhost", 8042
 
 if __name__ == "__main__":
     cmd = ReplaceCommand()
+    cmd.uri = "mitreid-server/oidc-server/authorize"
     cmd.replaceKeyVal("redirect_uri", '<script>"42"</script>')
 
     command(cmd)
-    sleep(4)
-    command(ClearCommand())
+    #sleep(4)
+    #command(ClearCommand())
 
 
