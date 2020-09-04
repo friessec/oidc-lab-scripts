@@ -6,42 +6,26 @@ from urllib.parse import urlparse, quote
 from time import sleep
 
 
+class CMDDef:
+    TYPE_CLEAR = "clear"
+    TYPE_REQUEST = "request"
+
+    QUERY_SEARCH_REPLACE = "querySearchReplace"
+
 class ClearCommand:
     def __init__(self):
-        self.type = "clear"
+        self.type = CMDDef.TYPE_CLEAR
 
 
 class ReplaceCommand:
     def __init__(self):
-        self.type = "request"
-        self.action = "querySearchReplace"
+        self.type = CMDDef.TYPE_REQUEST
+        self.action = CMDDef.QUERY_SEARCH_REPLACE
         self.uri = ""
         self.keyVal = {}
 
     def replaceKeyVal(self, key, value):
         self.keyVal[key] = quote(value)
-
-    def queryReplaceCommand(self, requestUri):
-        parse = urlparse(requestUri)
-
-        # Check if url same
-        if self.uri != parse.netloc+parse.path:
-            print('{}{}'.format(parse.netloc, parse.path))
-            return None
-
-        querys = parse.query.split("&")
-        new_query = []
-        for query in querys:
-            key, value = query.split('=')
-            print(self.keyVal)
-            if key in self.keyVal:
-                print(key)
-                value = self.keyVal.get(key)
-            query = key + '=' + quote(value)
-            new_query.append(query)
-
-        new_query = "&".join(new_query)
-        return parse._replace(query=new_query).geturl()
 
 
 def client(ip, port, message):

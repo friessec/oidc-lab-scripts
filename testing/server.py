@@ -7,7 +7,14 @@ from urllib.parse import urlparse, quote
 from time import sleep
 
 
-class Intercept():
+class CMDDef:
+    TYPE_CLEAR = "clear"
+    TYPE_REQUEST = "request"
+
+    QUERY_SEARCH_REPLACE = "querySearchReplace"
+
+
+class Intercept:
     def __init__(self, search, replace):
         self.search = base64.b64decode(search).decode('ascii')
         self.replace = base64.b64decode(replace).decode('ascii')
@@ -15,8 +22,8 @@ class Intercept():
 
 class InterceptReplaceCommand:
     def __init__(self, uri, keyVal):
-        self.type = "request"
-        self.action = "querySearchReplace"
+        self.type = CMDDef.TYPE_REQUEST
+        self.action = CMDDef.QUERY_SEARCH_REPLACE
         self.uri = uri
         self.keyVal = keyVal
 
@@ -48,10 +55,9 @@ class ThreadedTCPRequestHandler(socketserver.BaseRequestHandler):
     def handle(self):
         data = str(self.request.recv(1024), 'ascii')
         cmd = json.loads(data)
-        print(cmd)
-        if cmd.get("type") == 'clear':
+        if cmd.get("type") == CMDDef.TYPE_CLEAR:
             self.server.controller.clear()
-        elif cmd.get("type") == 'request' and cmd.get("action") == 'querySearchReplace':
+        elif cmd.get("type") == CMDDef.TYPE_REQUEST and cmd.get("action") == CMDDef.QUERY_SEARCH_REPLACE:
             intercept = InterceptReplaceCommand(cmd.get('uri'), cmd.get('keyVal'))
             self.server.controller.requestInterceptor = intercept
         elif cmd.get("type") == 'response':
@@ -119,7 +125,7 @@ class ProfessosEnhancer(object):
 
     def request(self):
         for intercept in self.controller.requestInterceptor:
-            if intercept.action == "querySearchReplace":
+            if intercept.action == CMDDef.QUERY_SEARCH_REPLACE:
                 print(intercept.replace("test"))
 
     def response(self):
