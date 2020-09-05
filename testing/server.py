@@ -59,10 +59,10 @@ class InterceptJWKSCommand:
         self.keys = keys
 
 
-class ThreadedTCPRequestHandler(socketserver.BaseRequestHandler):
+class ThreadedTCPRequestHandler(socketserver.StreamRequestHandler):
 
     def handle(self):
-        data = str(self.request.recv(1024), 'ascii')
+        data = str(self.rfile.readline(), 'ascii')
         cmd = json.loads(data)
         if cmd.get("type") == CMDDef.TYPE_CLEAR:
             self.server.controller.clear()
@@ -82,6 +82,7 @@ class ThreadedTCPRequestHandler(socketserver.BaseRequestHandler):
         elif cmd.get("action") == CMDDef.JWKS_SPOOFING:
             intercept = InterceptJWKSCommand(cmd.get('uri'), cmd.get('keys'))
         return intercept
+
 
 class ThreadedTCPServer(socketserver.ThreadingMixIn, socketserver.TCPServer):
     allow_reuse_address = True
