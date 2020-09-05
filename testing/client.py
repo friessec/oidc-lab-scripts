@@ -65,9 +65,15 @@ def command(cmd):
 ip, port = "localhost", 8042
 
 if __name__ == "__main__":
+    command(ClearCommand())
+
     jwks = JWKSSpoof()
     jwks.uri = "https://attack-idp.professos/modauthopenidc/jwks"
     jwks.keys[0]["another"] = "abbbaa"
+
+    keys = jwks.keys
+
+    #print({ "keys": keys})
 
     command(jwks)
     #data = json.dumps(jwks.__dict__)
