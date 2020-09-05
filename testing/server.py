@@ -12,6 +12,7 @@ class CMDDef:
     TYPE_REQUEST = "request"
 
     QUERY_SEARCH_REPLACE = "querySearchReplace"
+    JWKS_SPOOFING = "jwksSpoofing"
 
 
 class Intercept:
@@ -50,6 +51,14 @@ class InterceptReplaceCommand:
         return parse._replace(query=new_query).geturl()
 
 
+class InterceptJWKSCommand:
+    def __init__(self, uri, keys):
+        self.type = CMDDef.TYPE_REQUEST
+        self.action = CMDDef.JWKS_SPOOFING
+        self.uri = uri
+        self.keys = keys
+
+
 class ThreadedTCPRequestHandler(socketserver.BaseRequestHandler):
 
     def handle(self):
@@ -57,9 +66,8 @@ class ThreadedTCPRequestHandler(socketserver.BaseRequestHandler):
         cmd = json.loads(data)
         if cmd.get("type") == CMDDef.TYPE_CLEAR:
             self.server.controller.clear()
-        elif cmd.get("type") == CMDDef.TYPE_REQUEST and cmd.get("action") == CMDDef.QUERY_SEARCH_REPLACE:
-            intercept = InterceptReplaceCommand(cmd.get('uri'), cmd.get('keyVal'))
-            self.server.controller.requestInterceptor = intercept
+        elif cmd.get("type") == CMDDef.TYPE_REQUEST:
+            self.server.controller.requestInterceptor = self.request_selection(cmd)
         elif cmd.get("type") == 'response':
             intercept = Intercept(cmd.get('search'), cmd.get('replace'))
             self.server.controller.responseInterceptor = intercept
@@ -67,6 +75,13 @@ class ThreadedTCPRequestHandler(socketserver.BaseRequestHandler):
         response = bytes("OK", 'ascii')
         self.request.sendall(response)
 
+    def request_selection(self, cmd):
+        intercept = None
+        if cmd.get("action") == CMDDef.QUERY_SEARCH_REPLACE:
+            intercept = InterceptReplaceCommand(cmd.get('uri'), cmd.get('keyVal'))
+        elif cmd.get("action") == CMDDef.JWKS_SPOOFING:
+            intercept = InterceptJWKSCommand(cmd.get('uri'), cmd.get('keys'))
+        return intercept
 
 class ThreadedTCPServer(socketserver.ThreadingMixIn, socketserver.TCPServer):
     allow_reuse_address = True
@@ -127,6 +142,8 @@ class ProfessosEnhancer(object):
         for intercept in self.controller.requestInterceptor:
             if intercept.action == CMDDef.QUERY_SEARCH_REPLACE:
                 print(intercept.replace("test"))
+            elif intercept.action == CMDDef.JWKS_SPOOFING:
+                print(intercept.keys)
 
     def response(self):
         for intercept in self.controller.responseInterceptor:
