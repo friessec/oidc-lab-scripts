@@ -1,12 +1,10 @@
 # Export
 ```
 Type: GET
-Url:  /{rp|op}/{testId}/export
+Url:  /{rp|op}/{testId}/export-json
 Returns:
     Json:
         "Content-type": "application/json"
-    XML:
-        "Content-type": "application/xml"
 ```
 
 # Create Testplan
@@ -36,6 +34,13 @@ Payload: "TestConfig"
 Returns: "Content-type": "application/json"
 ```
 
+# Run Test
+```
+Type: POST
+Url:  /{rp|op}/{testId}/expose/{stepId}
+Header: "Content-type": "application/json"
+Returns: "Content-type": "application/json"
+```
 
 # Run Test
 ```
