@@ -54,6 +54,7 @@ class Cli(cmd2.Cmd):
     @with_argparser(load_parser)
     @with_category('Command Loading')
     def do_load(self, ns: argparse.Namespace):
+        """ load a OP/RP config, further specific commands will be available afterwards """
         cfg_path = "config/" + ns.target + "/" + ns.name + "/professos.json"
         if not os.path.exists(cfg_path):
             self.perror(cmd2.style('No {} target named {} found!'.format(ns.target, ns.name), fg=cmd2.fg.red))
@@ -78,6 +79,7 @@ class Cli(cmd2.Cmd):
 
     @with_category('Command Loading')
     def do_unload(self, ns: argparse.Namespace):
+        """ unloads current loaded OP/RP config """
         if self._testModule:
             self.unregister_command_set(self._testModule)
             self._testModule = None

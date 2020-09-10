@@ -83,7 +83,7 @@ class Commands(CommandSet):
 
     @with_category(CATEGORY_COMMANDS)
     def do_report(self, args):
-        """ generates a human readable report"""
+        """ generates a human readable report from a json export """
         report = ReportGenerator(self.session_dir, self.session_dir + '/report')
         report.load_export("result.json")
         report.generate(self.target_name)
@@ -98,14 +98,17 @@ class Commands(CommandSet):
 
     @with_category(CATEGORY_COMMANDS)
     def do_delete(self, args):
+        """ removes Test Id from professos """
         self.delete()
 
     @with_category(CATEGORY_COMMANDS)
     def do_set_config(self, args):
+        """ set a configuration for professos """
         self.set_config()
 
     @with_category(CATEGORY_COMMANDS)
     def do_get_config(self, args):
+        """ get configuration and client id """
         self.get_config()
 
     expose_parser = cmd2.Cmd2ArgumentParser(CATEGORY_COMMANDS)
@@ -114,6 +117,7 @@ class Commands(CommandSet):
     @with_category(CATEGORY_COMMANDS)
     @with_argparser(expose_parser)
     def do_expose(self, ns: argparse.Namespace):
+        """ creates a test specific professos backend, for simple tests this could be used to do manual tests """
         try:
             if not self.config.discovery:
                 self.set_config()
@@ -127,10 +131,12 @@ class Commands(CommandSet):
 
     @with_category(CATEGORY_COMMANDS)
     def do_learn(self, args):
+        """ learn should be executed after creation """
         self.learn()
 
     @with_category(CATEGORY_COMMANDS)
     def do_export(self, args):
+        """ exports json result to result directory """
         self.export()
 
     run_parser = cmd2.Cmd2ArgumentParser(CATEGORY_COMMANDS)
@@ -141,6 +147,7 @@ class Commands(CommandSet):
     @with_category(CATEGORY_COMMANDS)
     @with_argparser(run_parser)
     def do_run(self, ns: argparse.Namespace):
+        """ runs a test, create and learn must be called before """
         if ns.all:
             self.runAllTests()
         else:
@@ -148,6 +155,7 @@ class Commands(CommandSet):
 
     @with_category(CATEGORY_COMMANDS)
     def do_full_test(self, args):
+        """ starts a complete test """
         self.do_create("")
         self.do_learn("")
         self.do_run("--all")
