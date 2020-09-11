@@ -1,5 +1,10 @@
 # oidc-lab professos cli
 
+The command line interface is based on CMD2 python package.
+It provides an interface to communicate with professos rest api.
+
+Furthermore in folder pentest are some simple scripts to intercept and change
+requests via a mitm proxy server script.
 
 ## Prerequisite
 
@@ -11,6 +16,13 @@ pip install -r requirements.txt
 ```
 
 ## Usage
+
+Start the cli:
+```
+./cli.py
+```
+
+Command "help" could be used to get some further usage informations per available command
 
 ### Quickstart
 
