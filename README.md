@@ -51,9 +51,8 @@ Run manual tests, mitm proxy server script must be loaded in oidc-lab
 load op mitreid-server
 create
 learn
-expose 40
 run_pyscript pentest/mitreid-server-redirect.py
-run 40
+run 48
 export
 report
 ```
