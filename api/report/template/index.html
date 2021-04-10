@@ -22,7 +22,7 @@
                         type="button"
                         data-toggle="collapse" data-target="#collapse{{ loop.index }}" aria-expanded="false"
                         aria-controls="collapse{{ loop.index }}">
-                    {{ result['StepReference']['Name'] }} - {{ testResult }}
+			[#{{ loop.index - 1}}] {{ result['StepReference']['Name'] }} - {{ testResult }}
                 </button>
             </h2>
         </div>
